@@ -12,7 +12,11 @@ function love.load(a)
 end
 
 function love.update(dt)
-  player.x = player.x + (player.speed * dt)
+  if (player.x + player.w) > love.graphics.getWidth() then
+    player.x = 0
+  else
+    player.x = player.x + (player.speed * dt)
+  end
 end
 
 function love.draw(dt)
