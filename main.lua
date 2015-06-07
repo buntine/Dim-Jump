@@ -1,3 +1,5 @@
+require "lib/fun" ()
+
 function love.load(a)
   love.graphics.setBackgroundColor(255, 255, 255)
   love.graphics.setColor(80, 80, 80)
@@ -12,6 +14,7 @@ function love.load(a)
     level = 1
   }
 
+  -- width, x, y.
   levels = {
     { {100, 20, 20}, {360, 20, 20}, {600, 20, 20} },
     { {160, 20, 20}, {360, 20, 20}, {500, 20, 20}, {700, 20, 20} }
@@ -66,14 +69,5 @@ end
 
 function collisionFound()
   obstacles = levels[player.level]
-  found = false
-
-  for _, o in ipairs(obstacles) do
-    if collision(o) then
-      found = true
-      break
-    end
-  end
-
-  return found
+  return any(collision, obstacles)
 end
