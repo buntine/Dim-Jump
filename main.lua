@@ -5,8 +5,8 @@ function love.load(a)
   love.graphics.setColor(80, 80, 80)
 
   world = {
-    gravity = 3,
-    velocity = -20,
+    gravity = 0.9,
+    velocity = -10,
     ground = love.graphics.getHeight() - 80
   }
 
@@ -43,10 +43,11 @@ function love.update(dt)
   end
 
   if player.jumping then
-    if player.y + player.v > world.ground then
+    if player.y + player.v < world.ground then
       player.y = player.y + player.v
-      player.v = player.v - world.gravity
+      player.v = player.v + world.gravity
     else
+      player.y = world.ground - player.h
       player.jumping = false
     end
   end
@@ -75,17 +76,17 @@ function drawLevel()
   obstacles = levels[player.level]
 
   for _, o in ipairs(obstacles) do
-    love.graphics.rectangle("fill", o[1], (player.y + player.h) - o[3], o[2], o[3])
+    love.graphics.rectangle("fill", o[1], world.ground - o[3], o[2], o[3])
   end
 end
 
 function collision(o)
-  ox = o[1]
-  oy = (player.y + player.h) - o[3]
+  ox, ow, oh = o[1], o[2], o[3]
+  oy = (player.y + player.h) - oh
 
-  return player.x < (ox + o[2]) and
+  return player.x < (ox + ow) and
     ox < (player.x + player.w) and
-    player.y < (oy + o[3]) and
+    player.y < (oy + oh) and
     oy < (player.y + player.h)
 end
 
