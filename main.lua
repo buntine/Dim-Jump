@@ -4,15 +4,23 @@ function love.load(a)
   love.graphics.setBackgroundColor(255, 255, 255)
   love.graphics.setColor(80, 80, 80)
 
+  world = {
+    gravity = 3,
+    velocity = -20,
+    ground = love.graphics.getHeight() - 80
+  }
+
   player = {
     x = 0,
-    y = (love.graphics.getHeight() - 100),
     w = 20,
     h = 20,
+    v = 0,
+    jumping = false,
     deaths = 0,
     speed = 130,
     level = 1
   }
+  player.y = world.ground - player.h
 
   -- width, x, y.
   levels = {
@@ -27,6 +35,20 @@ function love.update(dt)
     player.level = player.level + 1
   else
     player.x = player.x + (player.speed * dt)
+  end
+
+  if love.keyboard.isDown(" ") and not player.jumping then
+    player.jumping = true
+    player.v = world.velocity
+  end
+
+  if player.jumping then
+    if player.y + player.v > world.ground then
+      player.y = player.y + player.v
+      player.v = player.v - world.gravity
+    else
+      player.jumping = false
+    end
   end
 
   if collisionFound() then
@@ -46,7 +68,7 @@ function drawPlayer()
 end
 
 function drawFloor()
-  love.graphics.rectangle("fill", 0, (player.y + player.h), love.graphics.getWidth(), 80)
+  love.graphics.rectangle("fill", 0, world.ground, love.graphics.getWidth(), world.ground)
 end
 
 function drawLevel()
