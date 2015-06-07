@@ -7,8 +7,12 @@ function love.load(a)
     y = (love.graphics.getHeight() - 100),
     w = 20,
     h = 20,
+    deaths = 0,
     speed = 130,
-    level = 1
+    level = 1,
+    collisionFound = function ()
+      return false
+    end
   }
 
   levels = {
@@ -23,6 +27,11 @@ function love.update(dt)
     player.level = player.level + 1
   else
     player.x = player.x + (player.speed * dt)
+  end
+
+  if player.collisionFound() then
+    player.deaths = player.death + 1
+    player.x = 0
   end
 end
 
