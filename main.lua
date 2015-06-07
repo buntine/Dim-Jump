@@ -7,7 +7,7 @@ function love.load(a)
     y = (love.graphics.getHeight() - 100),
     w = 20,
     h = 20,
-    speed = 80
+    speed = 120
   }
 end
 
@@ -21,6 +21,7 @@ function love.draw(dt)
 end
 
 function drawPlayer()
+  love.graphics.rectangle("fill", player.x, player.y, player.w, player.h)
 end
 
 function drawFloor()
