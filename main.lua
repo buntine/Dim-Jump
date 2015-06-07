@@ -20,6 +20,7 @@ function love.load(a)
     speed = 160,
     level = 1
   }
+
   player.w = player.sprite:getWidth()
   player.h = player.sprite:getHeight()
   player.y = world.ground - player.h
