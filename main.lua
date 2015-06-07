@@ -5,7 +5,7 @@ function love.load(a)
   love.graphics.setColor(80, 80, 80)
 
   world = {
-    gravity = 0.9,
+    gravity = 0.8,
     velocity = -10,
     ground = love.graphics.getHeight() - 80
   }
@@ -17,7 +17,7 @@ function love.load(a)
     v = 0,
     jumping = false,
     deaths = 0,
-    speed = 130,
+    speed = 150,
     level = 1
   }
   player.y = world.ground - player.h
@@ -82,7 +82,7 @@ end
 
 function collision(o)
   ox, ow, oh = o[1], o[2], o[3]
-  oy = (player.y + player.h) - oh
+  oy = world.ground - oh
 
   return player.x < (ox + ow) and
     ox < (player.x + player.w) and
