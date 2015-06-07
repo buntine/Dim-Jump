@@ -13,10 +13,11 @@ function love.load(a)
   player = {
     x = 0,
     v = 0,
+    rotation = 0,
     sprite = love.graphics.newImage("assets/dim.gif"),
     jumping = false,
     deaths = 0,
-    speed = 150,
+    speed = 160,
     level = 1
   }
   player.w = player.sprite:getWidth()
@@ -44,11 +45,14 @@ function love.update(dt)
   end
 
   if player.jumping then
+    player.rotation = player.rotation + (dt * math.pi * 4.61)
+
     if player.y + player.v < (world.ground - player.h) then
       player.y = player.y + player.v
       player.v = player.v + world.gravity
     else
       player.y = world.ground - player.h
+      player.rotation = 0
       player.jumping = false
     end
   end
@@ -67,7 +71,13 @@ function love.draw(dt)
 end
 
 function drawPlayer()
-  love.graphics.draw(player.sprite, player.x, player.y)
+  tx, ty = 0, 0
+
+  if player.jumping then
+    tx, ty = player.w/2, player.h/2
+  end
+
+  love.graphics.draw(player.sprite, player.x, player.y, player.rotation, 1, 1, tx, ty)
 end
 
 function drawFloor()
