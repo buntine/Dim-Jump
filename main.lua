@@ -9,10 +9,7 @@ function love.load(a)
     h = 20,
     deaths = 0,
     speed = 130,
-    level = 1,
-    collisionFound = function ()
-      return false
-    end
+    level = 1
   }
 
   levels = {
@@ -29,8 +26,8 @@ function love.update(dt)
     player.x = player.x + (player.speed * dt)
   end
 
-  if player.collisionFound() then
-    player.deaths = player.death + 1
+  if collisionFound() then
+    player.deaths = player.deaths + 1
     player.x = 0
   end
 end
@@ -55,4 +52,28 @@ function drawLevel()
   for _, o in ipairs(obstacles) do
     love.graphics.rectangle("fill", o[1], (player.y + player.h) - o[3], o[2], o[3])
   end
+end
+
+function collision(o)
+  ox = o[1]
+  oy = (player.y + player.h) - o[3]
+
+  return player.x < (ox + o[2]) and
+    ox < (player.x + player.w) and
+    player.y < (oy + o[3]) and
+    oy < (player.y + player.h)
+end
+
+function collisionFound()
+  obstacles = levels[player.level]
+  found = false
+
+  for _, o in ipairs(obstacles) do
+    if collision(o) then
+      found = true
+      break
+    end
+  end
+
+  return found
 end
