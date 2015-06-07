@@ -24,8 +24,8 @@ function love.load(a)
 
   -- width, x, y.
   levels = {
-    { {100, 20, 20}, {360, 20, 20}, {600, 20, 20} },
-    { {160, 20, 20}, {360, 20, 20}, {500, 20, 20}, {700, 20, 20} }
+    { {160, 20, 20}, {360, 20, 20}, {600, 20, 20} },
+    { {120, 20, 20}, {300, 20, 20}, {400, 20, 20}, {520, 20, 30}, {700, 20, 20} }
   }
 end
 
@@ -62,6 +62,7 @@ function love.draw(dt)
   drawFloor()
   drawPlayer()
   drawLevel()
+  drawScore()
 end
 
 function drawPlayer()
@@ -78,6 +79,10 @@ function drawLevel()
   for _, o in ipairs(obstacles) do
     love.graphics.rectangle("fill", o[1], world.ground - o[3], o[2], o[3])
   end
+end
+
+function drawScore()
+  love.graphics.print("Deaths: " .. player.deaths, 10, 10)
 end
 
 function collision(o)
