@@ -80,12 +80,13 @@ function progressJump(dt)
     player.jumping = false
   end
 end
+
 function drawPlayer()
-  tx, ty = 0, 0
+  local tx, ty = 0, 0
 
   if player.jumping then
-   tx = (player.w / 2) - player.rotation
-   ty = (player.h / 2) - player.rotation
+    tx = (player.w / 2) - player.rotation
+    ty = (player.h / 2) - player.rotation
   end
 
   love.graphics.draw(player.sprite, player.x, player.y, player.rotation, 1, 1, tx, ty)
@@ -96,7 +97,7 @@ function drawFloor()
 end
 
 function drawLevel()
-  obstacles = world.levels[player.level]
+  local obstacles = world.levels[player.level]
 
   for _, o in ipairs(obstacles) do
     love.graphics.rectangle("fill", o[1], world.ground - o[3], o[2], o[3])
