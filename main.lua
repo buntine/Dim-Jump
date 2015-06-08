@@ -75,7 +75,8 @@ function drawPlayer()
   tx, ty = 0, 0
 
   if player.jumping then
-    tx, ty = player.w/2, player.h/2
+   tx = (player.w / 2) - player.rotation
+   ty = (player.h / 2) - player.rotation
   end
 
   love.graphics.draw(player.sprite, player.x, player.y, player.rotation, 1, 1, tx, ty)
