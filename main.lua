@@ -7,70 +7,79 @@ function love.load(a)
   world = {
     gravity = 0.8,
     velocity = -10,
-    ground = love.graphics.getHeight() - 80
+    ground = love.graphics.getHeight() - 80,
+
+    -- width, x, y.
+    levels = {
+      { {160, 20, 20}, {360, 20, 20}, {600, 20, 20} },
+      { {120, 20, 20}, {300, 20, 20}, {400, 20, 20}, {520, 20, 30}, {700, 20, 20} }
+    }
   }
 
-  player = {
-    x = 0,
-    v = 0,
-    rotation = 0,
-    sprite = love.graphics.newImage("assets/dim.gif"),
-    jumping = false,
-    deaths = 0,
-    speed = 160,
-    level = 1
-  }
-
-  player.w = player.sprite:getWidth()
-  player.h = player.sprite:getHeight()
-  player.y = world.ground - player.h
-
-  -- width, x, y.
-  levels = {
-    { {160, 20, 20}, {360, 20, 20}, {600, 20, 20} },
-    { {120, 20, 20}, {300, 20, 20}, {400, 20, 20}, {520, 20, 30}, {700, 20, 20} }
-  }
+  player = createPlayer()
 end
 
 function love.update(dt)
-  if (player.x + player.w) > love.graphics.getWidth() then
-    player.x = 0
-    player.level = player.level + 1
-  else
-    player.x = player.x + (player.speed * dt)
-  end
+  if player.alive then
+    accelleratePlayer(dt)
 
-  if love.keyboard.isDown(" ") and not player.jumping then
-    player.jumping = true
-    player.v = world.velocity
-  end
-
-  if player.jumping then
-    player.rotation = player.rotation + (dt * math.pi * 4.61)
-
-    if player.y + player.v < (world.ground - player.h) then
-      player.y = player.y + player.v
-      player.v = player.v + world.gravity
-    else
-      player.y = world.ground - player.h
-      player.rotation = 0
-      player.jumping = false
+    if love.keyboard.isDown(" ") and not player.jumping then
+      player.jumping = true
+      player.v = world.velocity
     end
-  end
 
-  if collisionFound() then
-    player.deaths = player.deaths + 1
-    player.x = 0
+    if player.jumping then
+      progressJump(dt)
+    end
+
+    if collisionFound() then
+      player.deaths = player.deaths + 1
+      player.x = 0
+    end
+  else
+    if love.keyboard.isDown(" ") and not player.jumping then
+      player = createPlayer()
+    end
   end
 end
 
 function love.draw(dt)
-  drawFloor()
-  drawPlayer()
-  drawLevel()
-  drawScore()
+  if player.alive then
+    drawFloor()
+    drawPlayer()
+    drawLevel()
+    drawScore()
+  else
+    drawGameOver()
+  end
 end
 
+function accelleratePlayer(dt)
+  if (player.x + player.w) > love.graphics.getWidth() then
+    player.x = 0
+
+    if player.level < #world.levels then
+      player.level = player.level + 1
+    else
+      player.alive = false
+    end
+  else
+    player.x = player.x + (player.speed * dt)
+  end
+end
+
+function progressJump(dt)
+  player.rotation = player.rotation + (dt * math.pi * 4.61)
+
+  if player.y + player.v < (world.ground - player.h) then
+    player.y = player.y + player.v
+    player.v = player.v + world.gravity
+  else
+    player.y = world.ground - player.h
+    player.rotation = 0
+    player.jumping = false
+  end
+end
 function drawPlayer()
   tx, ty = 0, 0
 
@@ -87,7 +96,7 @@ function drawFloor()
 end
 
 function drawLevel()
-  obstacles = levels[player.level]
+  obstacles = world.levels[player.level]
 
   for _, o in ipairs(obstacles) do
     love.graphics.rectangle("fill", o[1], world.ground - o[3], o[2], o[3])
@@ -98,9 +107,15 @@ function drawScore()
   love.graphics.print("Deaths: " .. player.deaths, 10, 10)
 end
 
+function drawGameOver()
+  love.graphics.print("Game Over", 10, 10)
+  love.graphics.print("Deaths: " .. player.deaths, 10, 50)
+  love.graphics.print("Press SPACE to play again", 10, 100)
+end
+
 function collision(o)
-  ox, ow, oh = o[1], o[2], o[3]
-  oy = world.ground - oh
+  local ox, ow, oh = o[1], o[2], o[3]
+  local oy = world.ground - oh
 
   return player.x < (ox + ow) and
     ox < (player.x + player.w) and
@@ -109,6 +124,26 @@ function collision(o)
 end
 
 function collisionFound()
-  obstacles = levels[player.level]
+  local obstacles = world.levels[player.level]
   return any(collision, obstacles)
+end
+
+function createPlayer()
+  local p = {
+    x = 0,
+    v = 0,
+    rotation = 0,
+    sprite = love.graphics.newImage("assets/dim.gif"),
+    jumping = false,
+    deaths = 0,
+    speed = 160,
+    level = 1,
+    alive = true
+  }
+
+  p.w = p.sprite:getWidth()
+  p.h = p.sprite:getHeight()
+  p.y = world.ground - p.h
+
+  return p
 end
