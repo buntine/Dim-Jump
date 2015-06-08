@@ -106,10 +106,11 @@ end
 
 function drawScore()
   love.graphics.print("Deaths: " .. player.deaths, 10, 10)
+  love.graphics.print("Level: " .. player.level .. " / " .. #world.levels, 10, 30)
 end
 
 function drawGameOver()
-  love.graphics.print("Game Over", 10, 10)
+  love.graphics.print("Well done!", 10, 10)
   love.graphics.print("Deaths: " .. player.deaths, 10, 50)
   love.graphics.print("Press SPACE to play again", 10, 100)
 end
