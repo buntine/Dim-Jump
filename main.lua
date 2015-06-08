@@ -1,4 +1,5 @@
 require "lib/fun" ()
+local anim8 = require("lib/anim8")
 
 function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
@@ -22,6 +23,7 @@ end
 
 function love.update(dt)
   if player.alive then
+    player.animation:update(dt)
     accelleratePlayer(dt)
 
     if player.jumping then
@@ -95,7 +97,7 @@ function drawPlayer()
     ty = (player.h / 2) - player.rotation
   end
 
-  love.graphics.draw(player.sprite, player.x, player.y, player.rotation, 1, 1, tx, ty)
+  player.animation:draw(player.spritesheet, player.x, player.y, player.rotation, 1, 1, tx, ty)
 end
 
 function drawFloor()
@@ -137,20 +139,27 @@ function collisionFound()
 end
 
 function createPlayer()
+  local pSprites = love.graphics.newImage("assets/dim.png")
+  local pGrid = anim8.newGrid(16, 24, pSprites:getWidth(), pSprites:getHeight())
+
   local p = {
     x = 0,
     v = 0,
+    w = 16,
+    h = 24,
     rotation = 0,
-    sprite = love.graphics.newImage("assets/dim.gif"),
+    spritesheet = pSprites,
     jumping = false,
     deaths = 0,
     speed = 160,
     level = 1,
-    alive = true
+    alive = true,
+    animations = {
+      move = anim8.newAnimation(pGrid("1-2", 1), 0.25)
+    }
   }
 
-  p.w = p.sprite:getWidth()
-  p.h = p.sprite:getHeight()
+  p.animation = p.animations.move
   p.y = world.ground - p.h
 
   return p
