@@ -3,7 +3,6 @@ local anim8 = require("lib/anim8")
 
 function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
-  love.graphics.setColor(30, 30, 30)
 
   world = {
     gravity = 0.8,
