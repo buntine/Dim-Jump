@@ -9,10 +9,11 @@ function love.load(a)
     velocity = -10,
     ground = love.graphics.getHeight() - 80,
 
-    -- width, x, y.
+    -- x, w, h, float.
     levels = {
-      { {160, 20, 20}, {360, 20, 20}, {600, 20, 20} },
-      { {120, 20, 20}, {300, 20, 20}, {400, 20, 20}, {520, 20, 30}, {700, 20, 20} }
+      { {160, 20, 20, 0}, {360, 20, 20, 0}, {600, 20, 20, 0} },
+      { {120, 20, 20, 0}, {300, 20, 20, 0}, {400, 20, 20, 0}, {520, 20, 30, 0}, {700, 20, 20, 0} },
+      { {60, 100, 5, 29}, {190, 20, 20, 0}, {290, 40, 10, 0}, {300, 20, 20, 0}, {400, 20, 20, 0}, {550, 50, 10, 0} }
     }
   }
 
@@ -23,11 +24,6 @@ function love.update(dt)
   if player.alive then
     accelleratePlayer(dt)
 
-    if love.keyboard.isDown(" ") and not player.jumping then
-      player.jumping = true
-      player.v = world.velocity
-    end
-
     if player.jumping then
       progressJump(dt)
     end
@@ -35,10 +31,9 @@ function love.update(dt)
     if collisionFound() then
       player.deaths = player.deaths + 1
       player.x = 0
-    end
-  else
-    if love.keyboard.isDown(" ") and not player.jumping then
-      player = createPlayer()
+      player.jumping = false
+      player.rotation = 0
+      player.y = world.ground - player.h
     end
   end
 end
@@ -51,6 +46,17 @@ function love.draw(dt)
     drawScore()
   else
     drawGameOver()
+  end
+end
+
+function love.keypressed(key, isrepeat)
+  if key == " " then
+    if player.alive and not player.jumping then
+      player.jumping = true
+      player.v = world.velocity
+    elseif not player.alive then
+      player = createPlayer()
+    end
   end
 end
 
@@ -100,7 +106,7 @@ function drawLevel()
   local obstacles = world.levels[player.level]
 
   for _, o in ipairs(obstacles) do
-    love.graphics.rectangle("fill", o[1], world.ground - o[3], o[2], o[3])
+    love.graphics.rectangle("fill", o[1], world.ground - o[3] - o[4], o[2], o[3])
   end
 end
 
@@ -117,7 +123,7 @@ end
 
 function collision(o)
   local ox, ow, oh = o[1], o[2], o[3]
-  local oy = world.ground - oh
+  local oy = world.ground - oh - o[4]
 
   return player.x < (ox + ow) and
     ox < (player.x + player.w) and
@@ -139,7 +145,7 @@ function createPlayer()
     jumping = false,
     deaths = 0,
     speed = 160,
-    level = 1,
+    level = 3,
     alive = true
   }
 
