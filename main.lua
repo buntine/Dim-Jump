@@ -36,6 +36,7 @@ function love.update(dt)
       if (c.alpha - (800 * dt)) < 0 then
         table.remove(player.corpses, i)
       else
+        c.offset = c.offset + (20 * dt)
         c.scale = c.scale + (20 * dt)
         c.alpha = c.alpha - (800 * dt)
       end
@@ -129,7 +130,7 @@ end
 function drawCorpses()
   for _, c in ipairs(player.corpses) do
     love.graphics.setColor(255, 255, 255, c.alpha)
-    player.animation:draw(player.spritesheet, c.x, c.y, 0, c.scale, c.scale)
+    player.animation:draw(player.spritesheet, c.x, c.y, 0, c.scale, c.scale, c.offset, c.offset)
     love.graphics.setColor(255, 255, 255, 255)
   end
 end
@@ -191,6 +192,7 @@ function createCorpse()
   return {
     x = player.x,
     y = player.y,
+    offset = 0,
     scale = 1,
     alpha = 255,
   }
