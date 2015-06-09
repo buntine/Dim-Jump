@@ -32,12 +32,12 @@ function love.update(dt)
       progressJump(dt)
     end
 
-    for i, c in player.corpses do
-      if c.scale > 5 or c.alpha < 10 then
+    for i, c in ipairs(player.corpses) do
+      if (c.alpha - (800 * dt)) < 0 then
         table.remove(player.corpses, i)
       else
-        c.scale = c.scale + (5 * dt)
-        c.alpha = c.alpha - (255 / dt)
+        c.scale = c.scale + (20 * dt)
+        c.alpha = c.alpha - (800 * dt)
       end
     end
 
@@ -127,7 +127,7 @@ function drawLevel()
 end
 
 function drawCorpses()
-  for c in ipairs(player.corpses) do
+  for _, c in ipairs(player.corpses) do
     love.graphics.setColor(255, 255, 255, c.alpha)
     player.animation:draw(player.spritesheet, c.x, c.y, 0, c.scale, c.scale)
     love.graphics.setColor(255, 255, 255, 255)
