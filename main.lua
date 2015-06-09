@@ -3,6 +3,7 @@ local anim8 = require("lib/anim8")
 
 function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
+  love.graphics.setColor(255, 255, 255, 255)
 
   world = {
     gravity = 0.8,
@@ -42,8 +43,8 @@ end
 function love.draw(dt)
   if player.alive then
     drawFloor()
-    drawPlayer()
     drawLevel()
+    drawPlayer()
     drawScore()
   else
     drawGameOver()
