@@ -5,6 +5,8 @@ function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
   love.graphics.setColor(255, 255, 255, 255)
 
+  pSprites = love.graphics.newImage("assets/dim.png")
+
   world = {
     gravity = 0.8,
     velocity = -10,
@@ -30,7 +32,18 @@ function love.update(dt)
       progressJump(dt)
     end
 
+    for i, c in player.corpses do
+      if c.scale > 5 or c.alpha < 10 then
+        table.remove(player.corpses, i)
+      else
+        c.scale = c.scale + (5 * dt)
+        c.alpha = c.alpha - (255 / dt)
+      end
+    end
+
     if collisionFound() then
+      table.insert(player.corpses, createCorpse())
+
       player.deaths = player.deaths + 1
       player.x = 0
       player.jumping = false
@@ -45,6 +58,7 @@ function love.draw(dt)
     drawFloor()
     drawLevel()
     drawPlayer()
+    drawCorpses()
     drawScore()
   else
     drawGameOver()
@@ -112,6 +126,14 @@ function drawLevel()
   end
 end
 
+function drawCorpses()
+  for c in ipairs(player.corpses) do
+    love.graphics.setColor(255, 255, 255, c.alpha)
+    player.animation:draw(player.spritesheet, c.x, c.y, 0, c.scale, c.scale)
+    love.graphics.setColor(255, 255, 255, 255)
+  end
+end
+
 function drawScore()
   love.graphics.print("Deaths: " .. player.deaths, 10, 10)
   love.graphics.print("Level: " .. player.level .. " / " .. #world.levels, 10, 30)
@@ -139,7 +161,6 @@ function collisionFound()
 end
 
 function createPlayer()
-  local pSprites = love.graphics.newImage("assets/dim.png")
   local pGrid = anim8.newGrid(16, 24, pSprites:getWidth(), pSprites:getHeight())
 
   local p = {
@@ -156,11 +177,21 @@ function createPlayer()
     alive = true,
     animations = {
       move = anim8.newAnimation(pGrid("1-2", 1), 0.25)
-    }
+    },
+    corpses = {}
   }
 
   p.animation = p.animations.move
   p.y = world.ground - p.h
 
   return p
+end
+
+function createCorpse()
+  return {
+    x = player.x,
+    y = player.y,
+    scale = 1,
+    alpha = 255,
+  }
 end
