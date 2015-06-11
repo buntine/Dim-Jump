@@ -29,27 +29,17 @@ function love.update(dt)
     accelleratePlayer(dt)
 
     if player.jumping then
-      progressJump(dt)
+      animateJump(dt)
     end
 
     for i, c in ipairs(player.corpses) do
-      if (c.alpha - (800 * dt)) < 0 then
+      if not animateCorpse(c, dt) then
         table.remove(player.corpses, i)
-      else
-        c.offset = c.offset + (20 * dt)
-        c.scale = c.scale + (20 * dt)
-        c.alpha = c.alpha - (800 * dt)
       end
     end
 
     if collisionFound() then
-      table.insert(player.corpses, createCorpse())
-
-      player.deaths = player.deaths + 1
-      player.x = 0
-      player.jumping = false
-      player.rotation = 0
-      player.y = world.ground - player.h
+      killPlayer()
     end
   end
 end
@@ -91,7 +81,7 @@ function accelleratePlayer(dt)
   end
 end
 
-function progressJump(dt)
+function animateJump(dt)
   player.rotation = player.rotation + (dt * math.pi * 4.61)
 
   if player.y + player.v < (world.ground - player.h) then
@@ -188,12 +178,36 @@ function createPlayer()
   return p
 end
 
+function animateCorpse(c, dt)
+  local next_alpha = c.alpha - (800 * dt)
+
+  if next_alpha < 0 then
+    return false
+  else
+    c.offset = c.offset + (20 * dt)
+    c.scale = c.scale + (20 * dt)
+    c.alpha = next_alpha
+  end
+
+  return true
+end
+
+function killPlayer()
+  table.insert(player.corpses, createCorpse())
+
+  player.deaths = player.deaths + 1
+  player.x = 0
+  player.jumping = false
+  player.rotation = 0
+  player.y = world.ground - player.h
+end
+
 function createCorpse()
   return {
     x = player.x,
     y = player.y,
     offset = 0,
     scale = 1,
-    alpha = 255,
+    alpha = 255
   }
 end
