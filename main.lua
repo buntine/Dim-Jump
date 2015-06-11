@@ -29,11 +29,11 @@ function love.update(dt)
     accelleratePlayer(dt)
 
     if player.jumping then
-      animateJump(dt)
+      progressJump(dt)
     end
 
     for i, c in ipairs(player.corpses) do
-      if not animateCorpse(c, dt) then
+      if not progressCorpse(c, dt) then
         table.remove(player.corpses, i)
       end
     end
@@ -81,7 +81,7 @@ function accelleratePlayer(dt)
   end
 end
 
-function animateJump(dt)
+function progressJump(dt)
   player.rotation = player.rotation + (dt * math.pi * 4.61)
 
   if player.y + player.v < (world.ground - player.h) then
@@ -178,7 +178,7 @@ function createPlayer()
   return p
 end
 
-function animateCorpse(c, dt)
+function progressCorpse(c, dt)
   local next_alpha = c.alpha - (800 * dt)
 
   if next_alpha < 0 then
