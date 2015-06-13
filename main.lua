@@ -5,6 +5,8 @@ function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
   love.graphics.setColor(255, 255, 255, 255)
 
+  love.keyboard.setKeyRepeat(true)
+
   pSprites = love.graphics.newImage("assets/dim.png")
 
   world = {
@@ -14,7 +16,7 @@ function love.load(a)
 
     -- x, w, h, float.
     levels = {
-      { {160, 20, 20, 0}, {360, 20, 20, 0}, {600, 20, 20, 0} },
+      { {160, 20, 20, 0}, {360, 20, 20, 0}, {440, 60, 5, 17}, {600, 20, 20, 0} },
       { {120, 20, 20, 0}, {300, 20, 20, 0}, {400, 20, 20, 0}, {520, 20, 30, 0}, {700, 35, 15, 0} },
       { {60, 100, 5, 29}, {190, 20, 20, 0}, {290, 40, 10, 0}, {300, 20, 20, 0}, {400, 20, 20, 0}, {550, 45, 10, 0}, {720, 30, 15, 0} },
     }
@@ -30,6 +32,13 @@ function love.update(dt)
 
     if player.jumping then
       progressJump(dt)
+    end
+
+    if love.keyboard.isDown("down") and not player.jumping and not player.ducking then
+      player.ducking = true
+      player.animation = player.animations.duck
+      player.h = 16
+      player.y = world.ground - player.h
     end
 
     for i, c in ipairs(player.corpses) do
@@ -57,10 +66,7 @@ function love.draw(dt)
 end
 
 function love.keypressed(key, isrepeat)
-  if key == "down" then
-    print("duck on")
-  end
-  if key == "up" then
+  if (key == "up" or key == " ") then
     if player.alive and not player.jumping then
       player.jumping = true
       player.v = world.velocity
@@ -71,8 +77,11 @@ function love.keypressed(key, isrepeat)
 end
 
 function love.keyreleased(key)
-  if key == "down" then
-    print("duck off")
+  if key == "down" and player.ducking then
+    player.ducking = false
+    player.animation = player.animations.move
+    player.h = 24
+    player.y = world.ground - player.h
   end
 end
 
@@ -205,6 +214,10 @@ end
 
 function killPlayer()
   table.insert(player.corpses, createCorpse())
+
+  player.ducking = false
+  player.animation = player.animations.move
+  player.h = 24
 
   player.deaths = player.deaths + 1
   player.x = 0
