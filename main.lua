@@ -66,7 +66,7 @@ function love.draw(dt)
 end
 
 function love.keypressed(key, isrepeat)
-  if (key == "up" or key == " ") then
+  if key == "up" or key == " " then
     if player.alive and not player.jumping then
       player.jumping = true
       player.v = world.velocity
