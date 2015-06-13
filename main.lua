@@ -57,13 +57,22 @@ function love.draw(dt)
 end
 
 function love.keypressed(key, isrepeat)
-  if key == " " then
+  if key == "down" then
+    print("duck on")
+  end
+  if key == "up" then
     if player.alive and not player.jumping then
       player.jumping = true
       player.v = world.velocity
     elseif not player.alive then
       player = createPlayer()
     end
+  end
+end
+
+function love.keyreleased(key)
+  if key == "down" then
+    print("duck off")
   end
 end
 
@@ -162,12 +171,14 @@ function createPlayer()
     rotation = 0,
     spritesheet = pSprites,
     jumping = false,
+    ducking = false,
     deaths = 0,
     speed = 160,
     level = 1,
     alive = true,
     animations = {
-      move = anim8.newAnimation(pGrid("1-2", 1), 0.25)
+      move = anim8.newAnimation(pGrid("1-2", 1), 0.20),
+      duck = anim8.newAnimation(pGrid("1-2", 2), 0.20)
     },
     corpses = {}
   }
@@ -198,6 +209,7 @@ function killPlayer()
   player.deaths = player.deaths + 1
   player.x = 0
   player.jumping = false
+  player.ducking = false
   player.rotation = 0
   player.y = world.ground - player.h
 end
