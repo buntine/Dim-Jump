@@ -61,7 +61,7 @@ function love.draw(dt)
     drawPlayer()
     drawCorpses()
   else
-    drawGameOver()
+    drawUI()
   end
 end
 
@@ -116,13 +116,12 @@ function drawUI()
   love.graphics.draw(title, 10, 10)
   love.graphics.setColor(191, 161, 43)
   love.graphics.print("Deaths: " .. player.deaths, 8, love.graphics.getHeight() - 30)
-  love.graphics.setColor(255, 255, 255)
-end
 
-function drawGameOver()
-  love.graphics.print("Well done!", 10, 10)
-  love.graphics.print("Deaths: " .. player.deaths, 10, 50)
-  love.graphics.print("Press SPACE to play again", 10, 100)
+  if not player.alive then
+    love.graphics.print("Press UP to play again", 10, love.graphics.getHeight() / 2)
+  end
+
+  love.graphics.setColor(255, 255, 255)
 end
 
 function collision(o)
