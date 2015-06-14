@@ -52,8 +52,34 @@ function Player:finished()
   self.alive = false
 end
 
-function Player:accellerate(dt)
-  self.x = self.x + (self.speed * dt)
+function Player:removeCorpse(i)
+  table.remove(self.corpses, i)
+end
+
+function Player:duck()
+  self.ducking = true
+  self.animation = self.animations.duck
+  self.h = 16
+  self.y = self.floorTop()
+end
+
+function Player:stand()
+  self.ducking = false
+  self.animation = self.animations.move
+  self.h = 24
+  self.y = self.floorTop() -- TODO: Needed?
+end
+
+function Player:accellerate(dt, width)
+  if self:rightSide() > width then
+    if self.level < #self.world.levels then
+      self:nextLevel()
+    else
+      self:finished()
+    end
+  else
+    self.x = self.x + (self.speed * dt)
+  end
 end
 
 function Player:progressJump(dt)
@@ -61,12 +87,23 @@ function Player:progressJump(dt)
 
   self.rotation = self.rotation + (dt * math.pi * 4.61)
 
-  if next_y < self.floorTop() then
+  if next_y < self:floorTop() then
     self.y = next_y
     self.v = self.v + self.world.gravity
   else
-    self.y = self.floorTop()
+    self.y = self:floorTop()
     self.rotation = 0
     self.jumping = false
   end
+end
+
+function Player:kill()
+  table.insert(self.corpses, Corpse:new())
+
+  self:stand()
+
+  self.deaths = self..deaths + 1
+  self.x = 0
+  player.jumping = false
+  player.rotation = 0
 end

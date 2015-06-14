@@ -26,36 +26,24 @@ end
 function love.update(dt)
   if player.alive then
     player.animation:update(dt)
-
-    if player.rightSide() > love.graphics.getWidth() then
-      if player.level < #world.levels then
-        player.nextLevel()
-      else
-        player.finished()
-      end
-    else
-      player.accellerate(dt)
-    end
+    player:accellerate(dt, love.graphics.getWidth())
 
     if player.jumping then
-      player.progressJump(dt)
+      player:progressJump(dt)
     end
 
-    if love.keyboard.isDown("down") and not player.jumping and not player.ducking then
-      player.ducking = true
-      player.animation = player.animations.duck
-      player.h = 16
-      player.y = world.ground - player.h
+    if love.keyboard.isDown("down") and not (player.jumping or player.ducking) then
+      player:duck()
     end
 
     for i, c in ipairs(player.corpses) do
-      if not progressCorpse(c, dt) then
-        table.remove(player.corpses, i)
+      if not c:progress(dt) then
+        player:removeCorpse(i)
       end
     end
 
     if collisionFound() then
-      killPlayer()
+      player:kill()
     end
   end
 end
@@ -190,21 +178,6 @@ function progressCorpse(c, dt)
   end
 
   return true
-end
-
-function killPlayer()
-  table.insert(player.corpses, createCorpse())
-
-  player.ducking = false
-  player.animation = player.animations.move
-  player.h = 24
-
-  player.deaths = player.deaths + 1
-  player.x = 0
-  player.jumping = false
-  player.ducking = false
-  player.rotation = 0
-  player.y = world.ground - player.h
 end
 
 function createCorpse()
