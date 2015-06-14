@@ -67,14 +67,14 @@ function love.keypressed(key, isrepeat)
     if player.alive and not player.jumping then
       player:jump()
     elseif not player.alive then
-      player = Player:new()
+      player = Player:new{world=world}
     end
   end
 end
 
 function love.keyreleased(key)
   if key == "down" and player.ducking then
-    player.stand()
+    player:stand()
   end
 end
 

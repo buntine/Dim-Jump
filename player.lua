@@ -32,7 +32,7 @@ function Player:new(o)
   self.__index = self
 
   o.animation = o.animations.move
-  o.y = self.world.ground - o.h
+  o.y = o.world.ground - o.h
 
   return o
 end
@@ -62,18 +62,18 @@ function Player:duck()
   self.ducking = true
   self.animation = self.animations.duck
   self.h = 16
-  self.y = self.floorTop()
+  self.y = self:floorTop()
 end
 
 function Player:stand()
   self.ducking = false
   self.animation = self.animations.move
   self.h = 24
-  self.y = self.floorTop()
+  self.y = self:floorTop()
 end
 
 function Player:accellerate(dt, width)
-  if self:rightSide() > width then
+  if self:right() > width then
     if self.level < #self.world.levels then
       self:nextLevel()
     else
@@ -105,11 +105,11 @@ function Player:progressJump(dt)
 end
 
 function Player:kill()
-  table.insert(self.corpses, Corpse:new())
+  table.insert(self.corpses, Corpse:new{x=self.x, y=self.y})
 
   self:stand()
 
-  self.deaths = self..deaths + 1
+  self.deaths = self.deaths + 1
   self.x = 0
   player.jumping = false
   player.rotation = 0

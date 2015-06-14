@@ -1,6 +1,6 @@
 Corpse = {
-  x = player.x,
-  y = player.y,
+  x = 0,
+  y = 0,
   offset = 0,
   scale = 1,
   alpha = 255
