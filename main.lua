@@ -7,6 +7,8 @@ function love.load(a)
 
   love.keyboard.setKeyRepeat(true)
 
+  title = love.graphics.newImage("assets/title.png")
+
   world = {
     gravity = 0.8,
     velocity = -10,
@@ -52,11 +54,11 @@ end
 
 function love.draw(dt)
   if player.alive then
+    drawScore()
     drawFloor()
     drawLevel()
     drawPlayer()
     drawCorpses()
-    drawScore()
   else
     drawGameOver()
   end
@@ -110,8 +112,11 @@ function drawCorpses()
 end
 
 function drawScore()
-  love.graphics.print("Deaths: " .. player.deaths, 10, 10)
-  love.graphics.print("Level: " .. player.level .. " / " .. #world.levels, 10, 30)
+  love.graphics.draw(title, 10, 10)
+  love.graphics.setColor(191, 161, 43)
+  love.graphics.print("Deaths: " .. player.deaths, 270, 10)
+  love.graphics.print("Level: " .. player.level .. " / " .. #world.levels, 270, 30)
+  love.graphics.setColor(255, 255, 255)
 end
 
 function drawGameOver()
