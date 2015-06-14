@@ -1,3 +1,5 @@
+require "corpse"
+
 local anim8 = require("lib/anim8")
 local pSprites = love.graphics.newImage("assets/dim.png")
 local pGrid = anim8.newGrid(16, 24, pSprites:getWidth(), pSprites:getHeight())

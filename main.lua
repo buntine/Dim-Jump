@@ -28,6 +28,10 @@ function love.update(dt)
     player.animation:update(dt)
     player:accellerate(dt, love.graphics.getWidth())
 
+    if collisionFound() then
+      player:kill()
+    end
+
     if player.jumping then
       player:progressJump(dt)
     end
@@ -40,10 +44,6 @@ function love.update(dt)
       if not c:progress(dt) then
         player:removeCorpse(i)
       end
-    end
-
-    if collisionFound() then
-      player:kill()
     end
   end
 end
@@ -166,26 +166,4 @@ function createPlayer()
   return p
 end
 
-function progressCorpse(c, dt)
-  local next_alpha = c.alpha - (800 * dt)
 
-  if next_alpha < 0 then
-    return false
-  else
-    c.offset = c.offset + (20 * dt)
-    c.scale = c.scale + (20 * dt)
-    c.alpha = next_alpha
-  end
-
-  return true
-end
-
-function createCorpse()
-  return {
-    x = player.x,
-    y = player.y,
-    offset = 0,
-    scale = 1,
-    alpha = 255
-  }
-end
