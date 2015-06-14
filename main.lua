@@ -1,13 +1,11 @@
 require "lib/fun" ()
-local anim8 = require("lib/anim8")
+require "player"
 
 function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
   love.graphics.setColor(255, 255, 255, 255)
 
   love.keyboard.setKeyRepeat(true)
-
-  pSprites = love.graphics.newImage("assets/dim.png")
 
   world = {
     gravity = 0.8,
@@ -22,16 +20,25 @@ function love.load(a)
     }
   }
 
-  player = createPlayer()
+  player = Player:new{world: world}
 end
 
 function love.update(dt)
   if player.alive then
     player.animation:update(dt)
-    accelleratePlayer(dt)
+
+    if player.rightSide() > love.graphics.getWidth() then
+      if player.level < #world.levels then
+        player.nextLevel()
+      else
+        player.finished()
+      end
+    else
+      player.accellerate(dt)
+    end
 
     if player.jumping then
-      progressJump(dt)
+      player.progressJump(dt)
     end
 
     if love.keyboard.isDown("down") and not player.jumping and not player.ducking then
@@ -82,33 +89,6 @@ function love.keyreleased(key)
     player.animation = player.animations.move
     player.h = 24
     player.y = world.ground - player.h
-  end
-end
-
-function accelleratePlayer(dt)
-  if (player.x + player.w) > love.graphics.getWidth() then
-    player.x = 0
-
-    if player.level < #world.levels then
-      player.level = player.level + 1
-    else
-      player.alive = false
-    end
-  else
-    player.x = player.x + (player.speed * dt)
-  end
-end
-
-function progressJump(dt)
-  player.rotation = player.rotation + (dt * math.pi * 4.61)
-
-  if player.y + player.v < (world.ground - player.h) then
-    player.y = player.y + player.v
-    player.v = player.v + world.gravity
-  else
-    player.y = world.ground - player.h
-    player.rotation = 0
-    player.jumping = false
   end
 end
 
