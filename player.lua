@@ -18,8 +18,8 @@ Player = {
   level = 1,
   alive = true,
   animations = {
-    move = anim8.newAnimation(pGrid("1-2", 1), 0.20),
-    duck = anim8.newAnimation(pGrid("1-2", 2), 0.20)
+    move = anim8.newAnimation(pGrid("1-2", 1), 0.1),
+    duck = anim8.newAnimation(pGrid("1-2", 2), 0.1)
   },
   world = {},
   corpses = {}

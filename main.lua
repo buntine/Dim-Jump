@@ -4,6 +4,7 @@ require "player"
 function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
   love.graphics.setColor(255, 255, 255, 255)
+  love.graphics.setNewFont(20)
 
   love.keyboard.setKeyRepeat(true)
 
@@ -54,9 +55,9 @@ end
 
 function love.draw(dt)
   if player.alive then
-    drawScore()
     drawFloor()
     drawLevel()
+    drawUI()
     drawPlayer()
     drawCorpses()
   else
@@ -111,11 +112,10 @@ function drawCorpses()
   end
 end
 
-function drawScore()
+function drawUI()
   love.graphics.draw(title, 10, 10)
   love.graphics.setColor(191, 161, 43)
-  love.graphics.print("Deaths: " .. player.deaths, 270, 10)
-  love.graphics.print("Level: " .. player.level .. " / " .. #world.levels, 270, 30)
+  love.graphics.print("Deaths: " .. player.deaths, 8, love.graphics.getHeight() - 30)
   love.graphics.setColor(255, 255, 255)
 end
 
