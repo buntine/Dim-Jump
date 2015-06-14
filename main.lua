@@ -20,30 +20,32 @@ function love.load(a)
     }
   }
 
-  player = Player:new{world: world}
+  player = Player:new{world=world}
 end
 
 function love.update(dt)
-  if player.alive then
-    player.animation:update(dt)
-    player:accellerate(dt, love.graphics.getWidth())
+  if not player.alive then
+    return
+  end
 
-    if collisionFound() then
-      player:kill()
-    end
+  player.animation:update(dt)
+  player:accellerate(dt, love.graphics.getWidth())
 
-    if player.jumping then
-      player:progressJump(dt)
-    end
+  if collisionFound() then
+    player:kill()
+  end
 
-    if love.keyboard.isDown("down") and not (player.jumping or player.ducking) then
-      player:duck()
-    end
+  if player.jumping then
+    player:progressJump(dt)
+  end
 
-    for i, c in ipairs(player.corpses) do
-      if not c:progress(dt) then
-        player:removeCorpse(i)
-      end
+  if love.keyboard.isDown("down") and not (player.jumping or player.ducking) then
+    player:duck()
+  end
+
+  for i, c in ipairs(player.corpses) do
+    if not c:progress(dt) then
+      player:removeCorpse(i)
     end
   end
 end
@@ -63,20 +65,16 @@ end
 function love.keypressed(key, isrepeat)
   if key == "up" or key == " " then
     if player.alive and not player.jumping then
-      player.jumping = true
-      player.v = world.velocity
+      player:jump()
     elseif not player.alive then
-      player = createPlayer()
+      player = Player:new()
     end
   end
 end
 
 function love.keyreleased(key)
   if key == "down" and player.ducking then
-    player.ducking = false
-    player.animation = player.animations.move
-    player.h = 24
-    player.y = world.ground - player.h
+    player.stand()
   end
 end
 
@@ -136,34 +134,3 @@ function collisionFound()
   local obstacles = world.levels[player.level]
   return any(collision, obstacles)
 end
-
-function createPlayer()
-  local pGrid = anim8.newGrid(16, 24, pSprites:getWidth(), pSprites:getHeight())
-
-  local p = {
-    x = 0,
-    v = 0,
-    w = 16,
-    h = 24,
-    rotation = 0,
-    spritesheet = pSprites,
-    jumping = false,
-    ducking = false,
-    deaths = 0,
-    speed = 160,
-    level = 1,
-    alive = true,
-    animations = {
-      move = anim8.newAnimation(pGrid("1-2", 1), 0.20),
-      duck = anim8.newAnimation(pGrid("1-2", 2), 0.20)
-    },
-    corpses = {}
-  }
-
-  p.animation = p.animations.move
-  p.y = world.ground - p.h
-
-  return p
-end
-
-

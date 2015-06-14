@@ -69,7 +69,7 @@ function Player:stand()
   self.ducking = false
   self.animation = self.animations.move
   self.h = 24
-  self.y = self.floorTop() -- TODO: Needed?
+  self.y = self.floorTop()
 end
 
 function Player:accellerate(dt, width)
@@ -82,6 +82,11 @@ function Player:accellerate(dt, width)
   else
     self.x = self.x + (self.speed * dt)
   end
+end
+
+function Player:jump()
+  self.jumping = true
+  self.v = self.world.velocity
 end
 
 function Player:progressJump(dt)
