@@ -91,6 +91,12 @@ function drawPlayer()
     ty = (player.h / 2) - player.rotation
   end
 
+  if player.lifeAlpha > 0 then
+    withColour(255, 255, 255, player.lifeAlpha, function ()
+      love.graphics.printf(player.deaths + 1, player.x, player.y - 20, 1000, "left", player.rotation, 1, 1, tx, ty)
+    end)
+  end
+
   player.animation:draw(player.spritesheet, player.x, player.y, player.rotation, 1, 1, tx, ty)
 end
 
@@ -107,10 +113,12 @@ function drawLevel()
 end
 
 function drawCorpses()
+  local f
+
   for _, c in ipairs(player.corpses) do
-    love.graphics.setColor(255, 255, 255, c.alpha)
-    player.animation:draw(player.spritesheet, c.x, c.y, 0, c.scale, c.scale, c.offset, c.offset)
-    love.graphics.setColor(255, 255, 255, 255)
+    withColour(255, 255, 255, c.alpha, function ()
+      player.animation:draw(player.spritesheet, c.x, c.y, 0, c.scale, c.scale, c.offset, c.offset)
+    end)
   end
 end
 
@@ -139,4 +147,12 @@ end
 function collisionFound()
   local obstacles = world.levels[player.level]
   return any(collision, obstacles)
+end
+
+function withColour(r, g, b, a, f)
+  _r, _g, _b, _a = love.graphics.getColor()
+
+  love.graphics.setColor(r, g, b, a)
+  f()
+  love.graphics.setColor(_r, _g, _b, _a)
 end

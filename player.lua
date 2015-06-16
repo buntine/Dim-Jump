@@ -9,6 +9,7 @@ Player = {
   v = 0,
   w = 16,
   h = 24,
+  lifeAlpha = 255,
   rotation = 0,
   spritesheet = pSprites,
   jumping = false,
@@ -81,6 +82,10 @@ function Player:accellerate(dt, width)
     end
   else
     self.x = self.x + (self.speed * dt)
+
+    if self.lifeAlpha > 0 then
+      self.lifeAlpha = self.lifeAlpha - (200 * dt)
+    end
   end
 end
 
@@ -111,6 +116,7 @@ function Player:kill()
 
   self.deaths = self.deaths + 1
   self.x = 0
+  self.lifeAlpha = 255
   player.jumping = false
   player.rotation = 0
 end
