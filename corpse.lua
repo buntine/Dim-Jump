@@ -17,14 +17,13 @@ end
 
 function Corpse:progress(dt)
   local next_alpha = self.alpha - (800 * dt)
+  local progress = (next_alpha >= 0)
 
-  if next_alpha < 0 then
-    return false
-  else
+  if progress then
     self.offset = self.offset + (20 * dt)
     self.scale = self.scale + (20 * dt)
     self.alpha = next_alpha
   end
 
-  return true
+  return progress
 end

@@ -4,7 +4,7 @@ require "player"
 function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
   love.graphics.setColor(255, 255, 255, 255)
-  love.graphics.setNewFont(20)
+  love.graphics.setNewFont(18)
 
   love.keyboard.setKeyRepeat(true)
 
@@ -115,7 +115,10 @@ end
 function drawUI()
   love.graphics.draw(title, 10, 10)
   love.graphics.setColor(191, 161, 43)
-  love.graphics.print("Deaths: " .. player.deaths, 8, love.graphics.getHeight() - 30)
+  love.graphics.print("Level:", 8, love.graphics.getHeight() - 54)
+  love.graphics.print("Deaths:", 8, love.graphics.getHeight() - 28)
+  love.graphics.print(player.level, 90, love.graphics.getHeight() - 54)
+  love.graphics.print(player.deaths, 90, love.graphics.getHeight() - 28)
 
   if not player.alive then
     love.graphics.print("Press UP to play again", 10, love.graphics.getHeight() / 2)
