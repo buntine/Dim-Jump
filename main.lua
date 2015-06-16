@@ -92,7 +92,7 @@ function drawPlayer()
   end
 
   if player.lifeAlpha > 0 then
-    withColour(191, 161, 43, player.lifeAlpha, function ()
+    withColour(118, 101, 255, player.lifeAlpha, function ()
       love.graphics.printf(player.deaths + 1, player.x, player.y - 20, 1000, "left", player.rotation, 1, 1, tx, ty)
     end)
   end
@@ -124,14 +124,14 @@ end
 
 function drawUI()
   love.graphics.draw(title, 10, love.graphics.getHeight() - title:getHeight() - 10)
-  love.graphics.setColor(191, 161, 43)
-  love.graphics.print("Level " .. player.level, title:getWidth() + 30, love.graphics.getHeight() - 27)
 
-  if not player.alive then
-    love.graphics.print("Press UP to play again", 10, love.graphics.getHeight() / 2)
-  end
+  withColour(226, 182, 128, 255, function ()
+    love.graphics.print("Level " .. player.level, title:getWidth() + 30, love.graphics.getHeight() - 27)
 
-  love.graphics.setColor(255, 255, 255)
+    if not player.alive then
+      love.graphics.print("Press UP to play again", 10, love.graphics.getHeight() / 2)
+    end
+  end)
 end
 
 function collision(o)
