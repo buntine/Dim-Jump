@@ -92,7 +92,7 @@ function drawPlayer()
   end
 
   if player.lifeAlpha > 0 then
-    withColour(255, 255, 255, player.lifeAlpha, function ()
+    withColour(191, 161, 43, player.lifeAlpha, function ()
       love.graphics.printf(player.deaths + 1, player.x, player.y - 20, 1000, "left", player.rotation, 1, 1, tx, ty)
     end)
   end
