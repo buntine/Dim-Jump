@@ -5,10 +5,11 @@ local pSprites = love.graphics.newImage("assets/dim.png")
 local pGrid = anim8.newGrid(16, 24, pSprites:getWidth(), pSprites:getHeight())
 
 Player = {
-  x = 0,
+  x = 5,
   v = 0,
   w = 16,
   h = 24,
+  visible = true,
   lifeAlpha = 255,
   rotation = 0,
   spritesheet = pSprites,
@@ -115,7 +116,8 @@ function Player:kill()
   self:stand()
 
   self.deaths = self.deaths + 1
-  self.x = 0
+  self.visible = false
+  self.x = 5
   self.lifeAlpha = 255
   player.jumping = false
   player.rotation = 0

@@ -9,10 +9,12 @@ function love.load(a)
   love.keyboard.setKeyRepeat(true)
 
   title = love.graphics.newImage("assets/title.png")
+  dim_queue = love.graphics.newImage("assets/dim_queue.png")
 
   world = {
     gravity = 0.8,
     velocity = -10,
+    queue_offset = -30,
     ground = love.graphics.getHeight() - 80,
 
     -- x, w, h, float.
@@ -33,19 +35,28 @@ function love.update(dt)
     return
   end
 
-  player.animation:update(dt)
-  player:accellerate(dt, love.graphics.getWidth())
+  if not player.visible then
+    if world.queue_offset > -6 then
+      player.visible = true
+      world.queue_offset = -30
+    else
+      world.queue_offset = world.queue_offset + (120 * dt)
+    end
+  else
+    player.animation:update(dt)
+    player:accellerate(dt, love.graphics.getWidth())
 
-  if collisionFound() then
-    player:kill()
-  end
+    if collisionFound() then
+      player:kill()
+    end
 
-  if player.jumping then
-    player:progressJump(dt)
-  end
+    if player.jumping then
+      player:progressJump(dt)
+    end
 
-  if love.keyboard.isDown("down") and not (player.jumping or player.ducking) then
-    player:duck()
+    if love.keyboard.isDown("down") and not (player.jumping or player.ducking) then
+      player:duck()
+    end
   end
 
   for i, c in ipairs(player.corpses) do
@@ -60,8 +71,12 @@ function love.draw(dt)
     drawFloor()
     drawLevel()
     drawUI()
-    drawPlayer()
+    drawQueue()
     drawCorpses()
+
+    if player.visible then
+      drawPlayer()
+    end
   else
     drawUI()
   end
@@ -81,6 +96,10 @@ function love.keyreleased(key)
   if key == "down" and player.ducking then
     player:stand()
   end
+end
+
+function drawQueue()
+  love.graphics.draw(dim_queue, 5, world.queue_offset)
 end
 
 function drawPlayer()
@@ -113,8 +132,6 @@ function drawLevel()
 end
 
 function drawCorpses()
-  local f
-
   for _, c in ipairs(player.corpses) do
     withColour(255, 255, 255, c.alpha, function ()
       player.animation:draw(player.spritesheet, c.x, c.y, 0, c.scale, c.scale, c.offset, c.offset)
@@ -150,7 +167,7 @@ function collisionFound()
 end
 
 function withColour(r, g, b, a, f)
-  _r, _g, _b, _a = love.graphics.getColor()
+  local _r, _g, _b, _a = love.graphics.getColor()
 
   love.graphics.setColor(r, g, b, a)
   f()
