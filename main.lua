@@ -1,5 +1,6 @@
 require "lib/fun" ()
 require "player"
+require "world"
 
 function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
@@ -11,22 +12,7 @@ function love.load(a)
   title = love.graphics.newImage("assets/title.png")
   dim_queue = love.graphics.newImage("assets/dim_queue.png")
 
-  world = {
-    gravity = 0.8,
-    velocity = -10,
-    queue_offset = -30,
-    ground = love.graphics.getHeight() - 80,
-
-    -- x, w, h, float.
-    levels = {
-      { {160, 20, 20, 0}, {360, 20, 20, 0}, {600, 20, 20, 0} },
-      { {120, 20, 20, 0}, {300, 20, 20, 0}, {400, 20, 20, 0}, {520, 20, 30, 0}, {700, 35, 15, 0} },
-      { {110, 20, 20, 0}, {200, 20, 20, 0}, {290, 20, 20, 0}, {350, 100, 5, 29}, {490, 35, 12, 0}, {600, 20, 40, 0}, {740, 20, 30, 0} },
-      { {100, 200, 4, 27}, {340, 40, 10, 0}, {350, 20, 10, 10}, {420, 200, 4, 17}, {660, 30, 30, 0} },
-      { {120, 20, 20, 0}, {190, 20, 20, 0}, {260, 20, 20, 0}, {330, 20, 20, 0}, {400, 20, 20, 0}, {490, 20, 20, 0}, {560, 20, 20, 0}, {630, 20, 20, 0}, {700, 20, 20, 0}, {770, 20, 20, 0} },
-    }
-  }
-
+  world = World:new{ground=love.graphics.getHeight() - 80}
   player = Player:new{world=world}
 end
 
