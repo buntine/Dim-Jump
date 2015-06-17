@@ -22,11 +22,11 @@ function love.update(dt)
   end
 
   if not player.visible then
-    if world.queue_offset > -6 then
+    world:moveQueue(dt)
+
+    if world:queueHitGround() then
       player.visible = true
-      world.queue_offset = -30
-    else
-      world.queue_offset = world.queue_offset + (120 * dt)
+      world:resetQueue()
     end
   else
     player.animation:update(dt)

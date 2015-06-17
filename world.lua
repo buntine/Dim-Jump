@@ -2,6 +2,7 @@ World = {
   gravity = 0.8,
   velocity = -10,
   queue_offset = -30,
+  queue_speed = 120,
   ground = 0,
 
   -- x, w, h, float.
@@ -21,4 +22,16 @@ function World:new(o)
   self.__index = self
 
   return o
+end
+
+function World:moveQueue(dt)
+  self.queue_offset = self.queue_offset + (self.queue_speed * dt)
+end
+
+function World:queueHitGround()
+  return self.queue_offset > -6
+end
+
+function World:resetQueue()
+  self.queue_offset = -30
 end
