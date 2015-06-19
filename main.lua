@@ -14,7 +14,9 @@ function love.load(a)
   title = love.graphics.newImage("assets/title.png")
   dim_queue = love.graphics.newImage("assets/dim_queue.png")
 
-  jump_sfx = love.audio.newSource("assets/sounds/jump4.wav")
+  jump_sfx = map(function (n)
+    return love.audio.newSource("assets/sounds/jump" .. n .. ".wav")
+  end, range(7))
 
   world = World:new{ground=love.graphics.getHeight() - 80}
   player = Player:new{world=world}
@@ -75,7 +77,9 @@ end
 function love.keypressed(key, isrepeat)
   if key == "up" or key == " " then
     if player.alive and not player.jumping then
-      love.audio.play(jump_sfx)
+      local sfx = nth(math.random(7), jump_sfx)
+
+      love.audio.play(sfx)
       player:jump()
     elseif not player.alive then
       player = Player:new{world=world}
