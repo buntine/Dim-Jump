@@ -77,7 +77,7 @@ end
 function love.keypressed(key, isrepeat)
   if key == "up" or key == " " then
     if player.alive and not player.jumping then
-      local sfx = nth(math.random(7), jump_sfx)
+      local sfx = nth(math.random(length(jump_sfx)), jump_sfx)
 
       love.audio.play(sfx)
       player:jump()
