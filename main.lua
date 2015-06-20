@@ -7,7 +7,7 @@ function love.load(a)
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.setNewFont(18)
 
-  love.audio.setVolume(0.5)
+  love.audio.setVolume(0.1)
 
   love.keyboard.setKeyRepeat(true)
 
