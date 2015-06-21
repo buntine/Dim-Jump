@@ -6,13 +6,12 @@ function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.setNewFont(18)
-
   love.audio.setVolume(0.1)
-
   love.keyboard.setKeyRepeat(true)
 
   title = love.graphics.newImage("assets/title.png")
   dim_queue = love.graphics.newImage("assets/dim_queue.png")
+  splat_sfx = love.audio.newSource("assets/sounds/splat.wav")
 
   local jump_dir = "assets/sounds/jumps/"
   jump_sfx = map(function (f)
@@ -40,6 +39,7 @@ function love.update(dt)
     player:accellerate(dt, love.graphics.getWidth())
 
     if collisionFound() then
+      love.audio.play(splat_sfx)
       player:kill()
     end
 
