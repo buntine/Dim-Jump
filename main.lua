@@ -43,7 +43,7 @@ function love.update(dt)
 
     for i, o in ipairs(obstacles) do
       if collision(o) then
-        world:addCollisionPoint(i, player.centerX, player.centerY)
+        world:addCollisionPoint(i, player:centerX(), player:centerY())
         love.audio.play(splatSfx)
         player:kill()
       end
@@ -129,14 +129,18 @@ function drawLevel()
   local obstacles = world.levels[player.level]
   local r
 
-  for _, o in ipairs(obstacles) do
+  for i, o in ipairs(obstacles) do
     r = function ()
       love.graphics.polygon("fill", o[3])
     end
 
     r()
     love.graphics.setStencil(r)
-    love.graphics.draw(blood, o[3][1], world.ground - o[3][2])
+
+    for _, pos in ipairs(world.collisionPoints[i]) do
+      love.graphics.draw(blood, pos[1], pos[2])
+    end
+
     love.graphics.setStencil()
   end
 end
