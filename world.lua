@@ -1,9 +1,10 @@
 World = {
   gravity = 0.8,
   velocity = -10,
-  queue_offset = -30,
-  queue_speed = 120,
+  queueOffset = -30,
+  queueSpeed = 120,
   ground = 0,
+  collisionPoints = {},
 
   -- x, w, h, float.
 --  levels = {
@@ -40,17 +41,31 @@ function World:new(o)
       {20, 20, setY{600, -20, 620, -20, 620, 0, 600, 0}} },
   }
 
+  self:clearCollisionPoints(1)
+
   return o
 end
 
+function World:clearCollisionPoints(level)
+  self.collisionPoints = {}
+
+  for i=1, #self.levels[level] do
+    table.insert(self.collisionPoints, {}) 
+  end
+end
+
+function World:addCollisionPoint(i, x, y)
+  table.insert(self.collisionPoints[i], {x, y})
+end
+
 function World:moveQueue(dt)
-  self.queue_offset = self.queue_offset + (self.queue_speed * dt)
+  self.queueOffset = self.queueOffset + (self.queueSpeed * dt)
 end
 
 function World:queueHitGround()
-  return self.queue_offset > -6
+  return self.queueOffset > -6
 end
 
 function World:resetQueue()
-  self.queue_offset = -30
+  self.queueOffset = -30
 end

@@ -11,13 +11,13 @@ function love.load(a)
 
   title = love.graphics.newImage("assets/title.png")
   blood = love.graphics.newImage("assets/blood.png")
-  dim_queue = love.graphics.newImage("assets/dim_queue.png")
-  splat_sfx = love.audio.newSource("assets/sounds/splat.wav")
+  dimQueue = love.graphics.newImage("assets/dim_queue.png")
+  splatSfx = love.audio.newSource("assets/sounds/splat.wav")
 
-  local jump_dir = "assets/sounds/jumps/"
-  jump_sfx = map(function (f)
-    return love.audio.newSource(jump_dir..f)
-  end, love.filesystem.getDirectoryItems(jump_dir))
+  local jumpDir = "assets/sounds/jumps/"
+  jumpSfx = map(function (f)
+    return love.audio.newSource(jumpDir..f)
+  end, love.filesystem.getDirectoryItems(jumpDir))
 
   world = World:new{ground=love.graphics.getHeight() - 80}
   player = Player:new{world=world}
@@ -36,12 +36,17 @@ function love.update(dt)
       world:resetQueue()
     end
   else
+    local obstacles = world.levels[player.level]
+
     player.animation:update(dt)
     player:accellerate(dt, love.graphics.getWidth())
 
-    if collisionFound() then
-      love.audio.play(splat_sfx)
-      player:kill()
+    for i, o in ipairs(obstacles) do
+      if collision(o) then
+        world:addCollisionPoint(i, player.centerX, player.centerY)
+        love.audio.play(splatSfx)
+        player:kill()
+      end
     end
 
     if player.jumping then
@@ -79,7 +84,7 @@ end
 function love.keypressed(key, isrepeat)
   if key == "up" or key == " " then
     if player.alive and not player.jumping then
-        local sfx = nth(math.random(length(jump_sfx)), jump_sfx)
+        local sfx = nth(math.random(length(jumpSfx)), jumpSfx)
 
       love.audio.play(sfx)
       player:jump()
@@ -96,7 +101,7 @@ function love.keyreleased(key)
 end
 
 function drawQueue()
-  love.graphics.draw(dim_queue, 5, world.queue_offset)
+  love.graphics.draw(dimQueue, 5, world.queueOffset)
 end
 
 function drawPlayer()

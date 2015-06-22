@@ -47,9 +47,19 @@ function Player:floorTop()
   return self.world.ground - self.h
 end
 
+function Player:centerX()
+  return self.x + (self.w / 2)
+end
+
+function Player:centerY()
+  return self.y + (self.h / 2)
+end
+
 function Player:nextLevel()
   self.x = 0
   self.level = self.level + 1
+
+  self.world:clearCollisionPoints(self.level)
 end
 
 function Player:finished()
@@ -96,12 +106,12 @@ function Player:jump()
 end
 
 function Player:progressJump(dt)
-  local next_y = self.y + self.v
+  local nextY = self.y + self.v
 
   self.rotation = self.rotation + (dt * math.pi * 4.61)
 
-  if next_y < self:floorTop() then
-    self.y = next_y
+  if nextY < self:floorTop() then
+    self.y = nextY
     self.v = self.v + self.world.gravity
   else
     self.y = self:floorTop()
