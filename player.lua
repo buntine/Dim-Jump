@@ -58,8 +58,6 @@ end
 function Player:nextLevel()
   self.x = 0
   self.level = self.level + 1
-
-  self.world:clearCollisionPoints(self.level)
 end
 
 function Player:finished()
@@ -86,6 +84,8 @@ end
 
 function Player:accellerate(dt, width)
   if self:right() > width then
+    self.world:clearCollisionPoints(self.level)
+
     if self.level < #self.world.levels then
       self:nextLevel()
     else

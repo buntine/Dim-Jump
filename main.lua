@@ -43,7 +43,7 @@ function love.update(dt)
 
     for i, o in ipairs(obstacles) do
       if collision(o) then
-        world:addCollisionPoint(i, player:centerX(), player:centerY())
+        world:addCollisionPoint(i, player.x, player.y)
         love.audio.play(splatSfx)
         player:kill()
       end
