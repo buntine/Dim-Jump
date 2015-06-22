@@ -10,6 +10,7 @@ function love.load(a)
   love.keyboard.setKeyRepeat(true)
 
   title = love.graphics.newImage("assets/title.png")
+  blood = love.graphics.newImage("assets/blood.png")
   dim_queue = love.graphics.newImage("assets/dim_queue.png")
   splat_sfx = love.audio.newSource("assets/sounds/splat.wav")
 
@@ -121,9 +122,17 @@ end
 
 function drawLevel()
   local obstacles = world.levels[player.level]
+  local r
 
   for _, o in ipairs(obstacles) do
-    love.graphics.rectangle("fill", o[1], world.ground - o[3] - o[4], o[2], o[3])
+    r = function ()
+      love.graphics.polygon("fill", o[3])
+    end
+
+    r()
+    love.graphics.setStencil(r)
+    love.graphics.draw(blood, o[3][1], world.ground - o[3][2])
+    love.graphics.setStencil()
   end
 end
 
@@ -148,8 +157,7 @@ function drawUI()
 end
 
 function collision(o)
-  local ox, ow, oh = o[1], o[2], o[3]
-  local oy = world.ground - oh - o[4]
+  local ox, oy, ow, oh = o[3][1], o[3][2], o[1], o[2]
 
   return player.x < (ox + ow) and
     ox < (player.x + player.w) and
