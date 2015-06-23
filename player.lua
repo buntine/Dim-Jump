@@ -84,13 +84,13 @@ end
 
 function Player:accellerate(dt, width)
   if self:right() > width then
-    self.world:clearCollisionPoints(self.level)
-
     if self.level < #self.world.levels then
       self:nextLevel()
     else
       self:finished()
     end
+
+    self.world:clearCollisionPoints(self.level)
   else
     self.x = self.x + (self.speed * dt)
 

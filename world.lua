@@ -34,17 +34,23 @@ function World:new(o)
     return vertices
   end
 
+  doRect = function(x, w, h, f)
+    f = f or 0
+
+    return {w, h, setY{x, -(h + f), (x + w), -(h + f), (x + w), -f, x, -f}}
+  end
+
   -- w, h, {Polygon vertices}.
   self.levels = {
-    { {20, 20, setY{160, -20, 180, -20, 180, 0, 160, 0}},
-      {20, 20, setY{360, -20, 380, -20, 380, 0, 360, 0}}, 
-      {20, 20, setY{500, -20, 520, -20, 520, 0, 500, 0}},
-      {100, 10, setY{660, -37, 760, -37, 760, -27, 660, -27}} },
-    { {20, 20, setY{}},
-      {20, 20, setY{}},
-      {20, 20, setY{}},
-      {20, 30, setY{}},
-      {35, 15, setY{}} },
+    { doRect(160, 20, 20),
+      doRect(360, 20, 20), 
+      doRect(500, 20, 20),
+      doRect(660, 100, 10, 27) },
+    { doRect(120, 20, 20),
+      doRect(300, 20, 20),
+      doRect(400, 20, 20),
+      doRect(520, 20, 30),
+      doRect(700, 35, 15) }
   }
 
   self:clearCollisionPoints(1)
