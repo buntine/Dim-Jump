@@ -131,7 +131,9 @@ function drawLevel()
 
   for i, o in ipairs(obstacles) do
     r = function ()
-      love.graphics.polygon("fill", o[3])
+      for _, p in pairs(love.math.triangulate(o[3])) do
+        love.graphics.polygon("fill", p)
+      end
     end
 
     r()
