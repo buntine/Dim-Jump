@@ -30,6 +30,9 @@ function World:new(o)
   end
 
   self.levels = {
+    { doRect(200, 20, 20),
+      doRect(400, 20, 30),
+      doRect(600, 30, 20) },
     { doRect(160, 20, 20),
       doRect(360, 20, 20), 
       doRect(500, 20, 20),
@@ -46,6 +49,7 @@ function World:new(o)
       doRect(490, 35, 12),
       doRect(600, 20, 40),
       doRect(740, 20, 30) },
+    { doRect(140, 140, 8, 17) },
     { doRect(120, 20, 20),
       doRect(190, 20, 20),
       doRect(260, 20, 20),
