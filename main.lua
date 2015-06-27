@@ -166,12 +166,12 @@ function drawUI()
     love.graphics.draw(title, 10, love.graphics.getHeight() - title:getHeight() - 10)
 
     withColour(226, 182, 128, 255, function ()
-      love.graphics.print("Level " .. player.level, title:getWidth() + 30, love.graphics.getHeight() - 25)
+      love.graphics.print("Level " .. player.level, title:getWidth() + 30, love.graphics.getHeight() - 24)
     end)
   else
     withColour(186, 142, 88, 255, function ()
       withFont("big", function ()
-        love.graphics.print("Press UP to play again", 10, love.graphics.getHeight() / 2)
+        printInCenter("Press UP to play again")
       end)
     end)
   end
@@ -205,4 +205,12 @@ function withFont(name, f)
   love.graphics.setFont(fonts[name])
   f()
   love.graphics.setFont(_f)
+end
+
+function printInCenter(s)
+  local f = love.graphics.getFont()
+  local fw = f:getWidth(s)
+  local fh = f:getHeight(s)
+
+  love.graphics.print(s, (love.graphics.getWidth() / 2) - (fw / 2), (love.graphics.getHeight() / 2) - (fh / 2))
 end
