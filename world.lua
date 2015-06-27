@@ -32,7 +32,8 @@ function World:new(o)
   self.levels = {
     { doRect(200, 20, 20),
       doRect(400, 20, 30),
-      doRect(600, 30, 20) },
+      doRect(600, 30, 20) } }
+   ass = {
     { doRect(160, 20, 20),
       doRect(360, 20, 20), 
       doRect(500, 20, 20),

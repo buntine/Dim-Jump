@@ -5,7 +5,6 @@ require "world"
 function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
   love.graphics.setColor(255, 255, 255, 255)
-  love.graphics.setNewFont(18)
   love.audio.setVolume(0.1)
   love.keyboard.setKeyRepeat(true)
 
@@ -13,6 +12,13 @@ function love.load(a)
   blood = love.graphics.newImage("assets/blood.png")
   dimQueue = love.graphics.newImage("assets/dim_queue.png")
   splatSfx = love.audio.newSource("assets/sounds/splat.wav")
+
+  fonts = {
+    small = love.graphics.newFont("assets/addstandard.ttf", 18),
+    big = love.graphics.newFont("assets/addstandard.ttf", 42)
+  }
+
+  love.graphics.setFont(fonts.small)
 
   local jumpDir = "assets/sounds/jumps/"
   jumpSfx = map(function (f)
@@ -156,15 +162,19 @@ function drawCorpses()
 end
 
 function drawUI()
-  love.graphics.draw(title, 10, love.graphics.getHeight() - title:getHeight() - 10)
+  if player.alive then
+    love.graphics.draw(title, 10, love.graphics.getHeight() - title:getHeight() - 10)
 
-  withColour(226, 182, 128, 255, function ()
-    love.graphics.print("Level " .. player.level, title:getWidth() + 30, love.graphics.getHeight() - 27)
-
-    if not player.alive then
-      love.graphics.print("Press UP to play again", 10, love.graphics.getHeight() / 2)
-    end
-  end)
+    withColour(226, 182, 128, 255, function ()
+      love.graphics.print("Level " .. player.level, title:getWidth() + 30, love.graphics.getHeight() - 27)
+    end)
+  else
+    withColour(186, 142, 88, 255, function ()
+      withFont("big", function ()
+        love.graphics.print("Press UP to play again", 10, love.graphics.getHeight() / 2)
+      end)
+    end)
+  end
 end
 
 function collision(o)
@@ -187,4 +197,12 @@ function withColour(r, g, b, a, f)
   love.graphics.setColor(r, g, b, a)
   f()
   love.graphics.setColor(_r, _g, _b, _a)
+end
+
+function withFont(name, f)
+  local _f = love.graphics.getFont()
+
+  love.graphics.setFont(fonts[name])
+  f()
+  love.graphics.setFont(_f)
 end
