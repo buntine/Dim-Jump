@@ -12,7 +12,6 @@ function love.load(a)
   title = love.graphics.newImage("assets/title.png")
   blood = love.graphics.newImage("assets/blood.png")
   dimQueue = love.graphics.newImage("assets/dim_queue.png")
-  dimChute = love.graphics.newImage("assets/chute.png")
   splatSfx = love.audio.newSource("assets/sounds/splat.wav")
 
   local jumpDir = "assets/sounds/jumps/"
@@ -102,8 +101,7 @@ function love.keyreleased(key)
 end
 
 function drawQueue()
-  love.graphics.draw(dimQueue, 9, world.queueOffset)
-  love.graphics.draw(dimChute, 1, 0)
+  love.graphics.draw(dimQueue, 5, world.queueOffset)
 end
 
 function drawPlayer()

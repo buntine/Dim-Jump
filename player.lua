@@ -5,7 +5,7 @@ local pSprites = love.graphics.newImage("assets/dim.png")
 local pGrid = anim8.newGrid(16, 24, pSprites:getWidth(), pSprites:getHeight())
 
 Player = {
-  x = 9,
+  x = 5,
   v = 0,
   w = 16,
   h = 24,
@@ -127,7 +127,7 @@ function Player:kill()
 
   self.deaths = self.deaths + 1
   self.visible = false
-  self.x = 9
+  self.x = 5
   self.lifeAlpha = 255
   player.jumping = false
   player.rotation = 0
