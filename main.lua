@@ -166,7 +166,7 @@ function drawUI()
     love.graphics.draw(title, 10, love.graphics.getHeight() - title:getHeight() - 10)
 
     withColour(226, 182, 128, 255, function ()
-      love.graphics.print("Level " .. player.level, title:getWidth() + 30, love.graphics.getHeight() - 27)
+      love.graphics.print("Level " .. player.level, title:getWidth() + 30, love.graphics.getHeight() - 25)
     end)
   else
     withColour(186, 142, 88, 255, function ()
