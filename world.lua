@@ -61,7 +61,7 @@ function World:new(o)
       doRect(600, 20, 40),
       doRect(740, 20, 30) },
     { doRect(120, 140, 8, 17),
-      doRect(325, 33, 32),
+      doRect(325, 32, 31),
       doRect(420, 200, 12, 27),
       doRect(646, 20, 20) },
     { doRect(120, 500, 5, 27),
