@@ -102,8 +102,6 @@ function World:new(o)
                 805, -20, 810, -20, 810, -25, 815, -25, 815, 0, 780, 0}} }
   }
 
-  self:clearCollisionPoints(1)
-
   return o
 end
 
