@@ -29,7 +29,38 @@ function love.load(a)
   player = Player:new{world=world}
 end
 
+updates = 0
+draws = 0
+keypresses = 0
+startTime = os.time()
+lastKey = ""
+
+function drawDebug()
+  seconds = os.time() - startTime
+  love.graphics.print(updates    / seconds, 30, 10)
+  love.graphics.print(draws      / seconds, 30, 25)
+  love.graphics.print(keypresses / seconds, 30, 40)
+  love.graphics.print(os.time() - startTime, 30, 55)
+
+  love.graphics.print(tostring(love.keyboard.isDown(" ")), 230, 10)
+  love.graphics.print(lastKey, 230, 25)
+end
+
+function pressedKey()
+  if love.keyboard.isDown(" ") then
+    return keypressed(" ")
+  elseif love.keyboard.isDown("up") then
+    return keypressed("up")
+  elseif love.keyboard.isDown("down") then
+    return keypressed("down")
+  end
+end
+
 function love.update(dt)
+  updates = updates + 1
+
+  pressedKey()
+
   if not player.alive then
     return
   end
@@ -72,12 +103,14 @@ function love.update(dt)
 end
 
 function love.draw(dt)
+  draws = draws + 1
   if player.alive then
     drawFloor()
     drawLevel()
     drawUI()
     drawQueue()
     drawCorpses()
+    drawDebug()
 
     if player.visible then
       drawPlayer()
@@ -87,7 +120,14 @@ function love.draw(dt)
   end
 end
 
-function love.keypressed(key, isrepeat)
+--function love.keypressed(key, isrepeat)
+--  keypressed(key)
+--end
+
+function keypressed(key)
+  lastKey = key
+  keypresses = keypresses + 1
+
   if key == "up" or key == " " then
     if player.alive and not player.jumping then
         local sfx = nth(math.random(length(jumpSfx)), jumpSfx)
