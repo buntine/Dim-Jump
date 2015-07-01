@@ -36,6 +36,8 @@ function Player:new(o)
   o.animation = o.animations.move
   o.y = o.world.ground - o.h
 
+  o.world:clearCollisionPoints(self.level)
+
   return o
 end
 
