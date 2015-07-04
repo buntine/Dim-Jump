@@ -103,8 +103,10 @@ function Player:accellerate(dt, width)
 end
 
 function Player:jump()
+  local style = self.ducking and "small" or "big"
+
   self.jumping = true
-  self.v = self.world.velocity
+  self.v = self.world.velocity[style]
 end
 
 function Player:progressJump(dt)

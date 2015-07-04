@@ -1,6 +1,9 @@
 World = {
   gravity = 0.8,
-  velocity = -10,
+  velocity = {
+    big = -10,
+    small = -8
+  },
   queueOffset = -30,
   queueSpeed = 120,
   ground = 0,
