@@ -1,6 +1,7 @@
 require "lib/fun" ()
 require "player"
 require "world"
+require "debug"
 
 function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
@@ -27,39 +28,17 @@ function love.load(a)
 
   world = World:new{ground=love.graphics.getHeight() - 80}
   player = Player:new{world=world}
-end
-
-updates = 0
-draws = 0
-keypresses = 0
-startTime = os.time()
-lastKey = ""
-
-function drawDebug()
-  seconds = os.time() - startTime
-  love.graphics.print(updates    / seconds, 30, 10)
-  love.graphics.print(draws      / seconds, 30, 25)
-  love.graphics.print(keypresses / seconds, 30, 40)
-  love.graphics.print(os.time() - startTime, 30, 55)
-
-  love.graphics.print(tostring(love.keyboard.isDown(" ")), 230, 10)
-  love.graphics.print(lastKey, 230, 25)
-end
-
-function pressedKey()
-  if love.keyboard.isDown(" ") then
-    return keypressed(" ")
-  elseif love.keyboard.isDown("up") then
-    return keypressed("up")
-  elseif love.keyboard.isDown("down") then
-    return keypressed("down")
-  end
+  debug = Debug:new{visible=false, startTime=os.time()}
 end
 
 function love.update(dt)
-  updates = updates + 1
+  if debug.visibile then
+    debug:recordUpdate()
+  end
 
-  pressedKey()
+  if love.keyboard.isDown(" ") or love.keyboard.isDown("up") then
+    startJump()
+  end
 
   if not player.alive then
     return
@@ -90,6 +69,7 @@ function love.update(dt)
       player:progressJump(dt)
     end
 
+    -- Move to keypressed?
     if love.keyboard.isDown("down") and not (player.jumping or player.ducking) then
       player:duck()
     end
@@ -103,14 +83,20 @@ function love.update(dt)
 end
 
 function love.draw(dt)
-  draws = draws + 1
+  if debug.visible then
+    debug:recordDraw()
+  end
+
   if player.alive then
     drawFloor()
     drawLevel()
     drawUI()
     drawQueue()
     drawCorpses()
-    drawDebug()
+
+    if debug.visible then
+      drawDebug()
+    end
 
     if player.visible then
       drawPlayer()
@@ -120,23 +106,18 @@ function love.draw(dt)
   end
 end
 
---function love.keypressed(key, isrepeat)
---  keypressed(key)
---end
+function startJump()
+  if debug.visible then
+    debug:recordKey(key)
+  end
 
-function keypressed(key)
-  lastKey = key
-  keypresses = keypresses + 1
+  if player.alive and not player.jumping then
+    local sfx = nth(math.random(length(jumpSfx)), jumpSfx)
 
-  if key == "up" or key == " " then
-    if player.alive and not player.jumping then
-        local sfx = nth(math.random(length(jumpSfx)), jumpSfx)
-
-      love.audio.play(sfx)
-      player:jump()
-    elseif not player.alive then
-      player = Player:new{world=world}
-    end
+    love.audio.play(sfx)
+    player:jump()
+  elseif not player.alive then
+    player = Player:new{world=world}
   end
 end
 
@@ -215,6 +196,16 @@ function drawUI()
       end)
     end)
   end
+end
+
+function drawDebug()
+  local seconds = os.time() - debug.startTime
+
+  love.graphics.print(debug.updates    / seconds, 30, 10)
+  love.graphics.print(debug.draws      / seconds, 30, 25)
+  love.graphics.print(debug.keypresses / seconds, 30, 40)
+  love.graphics.print(seconds, 30, 55)
+  love.graphics.print(debug.lastKey, 230, 25)
 end
 
 function collision(o)
