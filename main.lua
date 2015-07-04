@@ -1,7 +1,7 @@
 require "lib/fun" ()
 require "player"
 require "world"
-require "debug"
+require "stats"
 
 function love.load(a)
   love.graphics.setBackgroundColor(171, 205, 236)
@@ -28,12 +28,12 @@ function love.load(a)
 
   world = World:new{ground=love.graphics.getHeight() - 80}
   player = Player:new{world=world}
-  debug = Debug:new{visible=false, startTime=os.time()}
+  stats = Stats:new{visible=false, startTime=os.time()}
 end
 
 function love.update(dt)
-  if debug.visibile then
-    debug:recordUpdate()
+  if stats.visibile then
+    stats:recordUpdate()
   end
 
   if love.keyboard.isDown(" ") or love.keyboard.isDown("up") then
@@ -83,8 +83,8 @@ function love.update(dt)
 end
 
 function love.draw(dt)
-  if debug.visible then
-    debug:recordDraw()
+  if stats.visible then
+    stats:recordDraw()
   end
 
   if player.alive then
@@ -94,8 +94,8 @@ function love.draw(dt)
     drawQueue()
     drawCorpses()
 
-    if debug.visible then
-      drawDebug()
+    if stats.visible then
+      drawStats()
     end
 
     if player.visible then
@@ -107,8 +107,8 @@ function love.draw(dt)
 end
 
 function startJump()
-  if debug.visible then
-    debug:recordKey(key)
+  if stats.visible then
+    stats:recordKey(key)
   end
 
   if player.alive and not player.jumping then
@@ -198,14 +198,14 @@ function drawUI()
   end
 end
 
-function drawDebug()
-  local seconds = os.time() - debug.startTime
+function drawStats()
+  local seconds = os.time() - stats.startTime
 
-  love.graphics.print(debug.updates    / seconds, 30, 10)
-  love.graphics.print(debug.draws      / seconds, 30, 25)
-  love.graphics.print(debug.keypresses / seconds, 30, 40)
+  love.graphics.print(stats.updates    / seconds, 30, 10)
+  love.graphics.print(stats.draws      / seconds, 30, 25)
+  love.graphics.print(stats.keypresses / seconds, 30, 40)
   love.graphics.print(seconds, 30, 55)
-  love.graphics.print(debug.lastKey, 230, 25)
+  love.graphics.print(stats.lastKey, 230, 25)
 end
 
 function collision(o)

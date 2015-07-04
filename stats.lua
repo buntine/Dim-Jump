@@ -1,4 +1,4 @@
-Debug = {
+Stats = {
   updates = 0,
   draws = 0,
   keypresses = 0,
@@ -7,7 +7,7 @@ Debug = {
   visible = true
 }
 
-function Debug:new(o)
+function Stats:new(o)
   o = o or {}
 
   setmetatable(o, self)
@@ -16,15 +16,15 @@ function Debug:new(o)
   return o
 end
 
-function Debug:recordUpdate()
+function Stats:recordUpdate()
   self.update = self.updates + 1
 end
 
-function Debug:recordDraw()
+function Stats:recordDraw()
   self.draws = self.draws + 1
 end
 
-function Debug:recordKey()
+function Stats:recordKey()
   self.lastKey = key
   self.keypresses = self.keypresses + 1
 end

@@ -13,7 +13,7 @@ function World:new(o)
   setmetatable(o, self)
   self.__index = self
 
-  setY = function(vertices)
+  local setY = function(vertices)
     for i, v in ipairs(vertices) do
       if i % 2 == 0 then
         vertices[i] = v + o.ground
@@ -23,7 +23,7 @@ function World:new(o)
     return vertices
   end
 
-  doRect = function(x, w, h, f)
+  local doRect = function(x, w, h, f)
     f = f or 0
 
     return {w, h, setY{x, -(h + f), (x + w), -(h + f), (x + w), -f, x, -f}}
