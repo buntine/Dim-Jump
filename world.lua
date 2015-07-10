@@ -110,10 +110,14 @@ function World:new(o)
       doRect(460, 20, 20),
       doRect(600, 47, 7),
       doRect(730, 20, 20) },
-    { doRect(100, 8, 42),
-      doRect(200, 8, 42),
-      doRect(300, 8, 42),
-      doRect(400, 8, 42) }
+    { doRect(100, 9, 44),
+      doRect(170, 9, 44),
+      doRect(240, 9, 44),
+      doRect(340, 9, 44),
+      doRect(440, 9, 44),
+      doRect(500, 50, 9, 17),
+      doRect(600, 9, 47),
+      doRect(660, 100, 9, 17) }
   }
 
   return o
