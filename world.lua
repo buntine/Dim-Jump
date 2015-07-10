@@ -117,7 +117,15 @@ function World:new(o)
       doRect(440, 9, 44),
       doRect(500, 50, 9, 17),
       doRect(600, 9, 47),
-      doRect(660, 100, 9, 17) }
+      doRect(660, 100, 9, 17),
+      doRect(800, 30, 25) },
+    { doRect(50, 300, 5, 68),
+      doRect(100, 29, 15),
+      doRect(200, 29, 15),
+      doRect(300, 20, 20),
+      doRect(400, 12, 35),
+      doRect(500, 150, 10, 17),
+      doRect(710, 28, 28) }
   }
 
   return o
