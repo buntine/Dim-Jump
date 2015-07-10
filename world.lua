@@ -4,6 +4,7 @@ World = {
     big = -10,
     small = -8
   },
+  maxCollisions = 9, -- Per obstacle.
   queueOffset = -30,
   queueSpeed = 120,
   ground = 0,
@@ -140,7 +141,13 @@ function World:clearCollisionPoints(level)
 end
 
 function World:addCollisionPoint(i, x, y)
-  table.insert(self.collisionPoints[i], {x, y})
+  local cp = self.collisionPoints[i]
+
+  if #cp > self.maxCollisions then
+    table.remove(cp, 1)
+  end
+
+  table.insert(cp, {x, y})
 end
 
 function World:moveQueue(dt)
