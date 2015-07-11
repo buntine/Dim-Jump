@@ -9,14 +9,14 @@ function love.load(a)
   love.audio.setVolume(0.1)
   love.keyboard.setKeyRepeat(true)
 
-  title = love.graphics.newImage("assets/title.png")
-  blood = love.graphics.newImage("assets/blood.png")
-  dimQueue = love.graphics.newImage("assets/dim_queue.png")
+  title = love.graphics.newImage("assets/images/title.png")
+  blood = love.graphics.newImage("assets/images/blood.png")
+  dimQueue = love.graphics.newImage("assets/images/dim_queue.png")
   splatSfx = love.audio.newSource("assets/sounds/splat.wav")
 
   fonts = {
-    small = love.graphics.newFont("assets/addstandard.ttf", 18),
-    big = love.graphics.newFont("assets/addstandard.ttf", 42)
+    small = love.graphics.newFont("assets/fonts/addstandard.ttf", 18),
+    big = love.graphics.newFont("assets/fonts/addstandard.ttf", 42)
   }
 
   love.graphics.setFont(fonts.small)
