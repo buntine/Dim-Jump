@@ -2,7 +2,10 @@
 
 A simple, addictive game in which you play as *The Dim*, a fried Dim Sim on the run with nothing to lose.
 
-[Download and play](/dist/DimJump_0-1-3.love?raw=true). Requires the Love2D framework.
+## Installation
+
+* [OSX package](/dist/DimJump-macosx-x64_0-1-3.zip?raw=true).
+* [Linux](/dist/DimJump_0-1-3.love?raw=true). Requires the Love2D framework.
 
 UP to jump, DOWN to duck. That is all.
 
