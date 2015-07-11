@@ -9,3 +9,5 @@ UP to jump, DOWN to duck. That is all.
 ![Dim Jump](/assets/screenshot.png?raw=true "Dim Jump")
 
 Inspired by Box Jump by [lessmilk.com](http://lessmilk.com/).
+
+Theme music from [Imperium](https://en.wikipedia.org/wiki/Imperium_(1992_video_game)) (Vic Tokai, 1992).

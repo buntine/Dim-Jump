@@ -13,6 +13,7 @@ function love.load(a)
   blood = love.graphics.newImage("assets/images/blood.png")
   dimQueue = love.graphics.newImage("assets/images/dim_queue.png")
   splatSfx = love.audio.newSource("assets/sounds/splat.wav")
+  theme = love.audio.newSource("assets/sounds/invaded_city.mp3")
 
   fonts = {
     small = love.graphics.newFont("assets/fonts/addstandard.ttf", 18),
@@ -25,6 +26,9 @@ function love.load(a)
   jumpSfx = map(function (f)
     return love.audio.newSource(jumpDir..f)
   end, love.filesystem.getDirectoryItems(jumpDir))
+
+  theme:setLooping(true)
+  love.audio.play(theme)
 
   world = World:new{ground=love.graphics.getHeight() - 80}
   player = Player:new{world=world}
