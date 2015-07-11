@@ -9,7 +9,7 @@ A simple, addictive game in which you play as *The Dim*, a fried Dim Sim on the 
 
 UP to jump, DOWN to duck. That is all.
 
-![Dim Jump](/assets/screenshot.png?raw=true "Dim Jump")
+![Dim Jump](/assets/images/screenshot.png?raw=true "Dim Jump")
 
 Inspired by Box Jump by [lessmilk.com](http://lessmilk.com/).
 
