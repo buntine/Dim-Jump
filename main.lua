@@ -195,8 +195,12 @@ function drawUI()
     end)
   else
     withColour(186, 142, 88, 255, function ()
+      withFont("small", function ()
+        printInCenter("Congratulations! You died " .. player.deaths .. " times", 0, -38)
+      end)
+
       withFont("big", function ()
-        printInCenter("Press UP to play again")
+        printInCenter("Press UP to play again", 0, 24)
       end)
     end)
   end
@@ -242,10 +246,13 @@ function withFont(name, f)
   love.graphics.setFont(_f)
 end
 
-function printInCenter(s)
+function printInCenter(s, xo, yo)
+  xo = xo or 0
+  yo = yo or 0
+
   local f = love.graphics.getFont()
   local fw = f:getWidth(s)
   local fh = f:getHeight(s)
 
-  love.graphics.print(s, (love.graphics.getWidth() / 2) - (fw / 2), (love.graphics.getHeight() / 2) - (fh / 2))
+  love.graphics.print(s, ((love.graphics.getWidth() / 2) - (fw / 2)) + xo, ((love.graphics.getHeight() / 2) - (fh / 2)) + yo)
 end
