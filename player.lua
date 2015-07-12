@@ -77,11 +77,16 @@ function Player:duck()
   self.y = self:floorTop()
 end
 
-function Player:stand()
+function Player:stand(o)
+  o = o or {setY = true}
+
   self.ducking = false
   self.animation = self.animations.move
   self.h = 24
-  self.y = self:floorTop()
+
+  if o.setY then
+    self.y = self:floorTop()
+  end
 end
 
 function Player:accellerate(dt, width)

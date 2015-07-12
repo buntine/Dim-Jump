@@ -127,7 +127,7 @@ end
 
 function love.keyreleased(key)
   if key == "down" and player.ducking then
-    player:stand()
+    player:stand{setY = not player.jumping}
   end
 end
 
