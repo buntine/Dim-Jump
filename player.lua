@@ -41,6 +41,11 @@ function Player:new(o)
   return o
 end
 
+function Player:continue(l, d)
+  self.level = l
+  self.deaths = d
+end
+
 function Player:right()
   return self.x + self.w
 end
