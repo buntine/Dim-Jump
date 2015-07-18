@@ -36,7 +36,7 @@ function love.load(a)
 end
 
 function love.quit()
-  print("QUIT")
+  savePlayer()
 end
 
 function love.update(dt)
@@ -208,9 +208,13 @@ function collisionFound()
   return any(collision, obstacles)
 end
 
+function savePlayer()
+  love.filesystem.write("save", player.level .. " " .. player.deaths)
+end
+
 function loadPlayer()
   if not love.filesystem.exists("save") then
-    love.filesystem.write("save", player.level .. " " .. player.deaths)
+    savePlayer()
 
     return player.level, player.deaths
   else
