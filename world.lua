@@ -141,7 +141,21 @@ function World:new(o)
       doRect(700, 10, 10, 68),
       doRect(770, 20, 20),
       doRect(840, 20, 20),
-      doRect(845, 10, 10, 68) }
+      doRect(845, 10, 10, 68) },
+    { doRect(120, 10, 40),
+      doRect(180, 10, 40),
+      doRect(240, 10, 40),
+      doRect(300, 10, 10),
+      doRect(300, 10, 10, 68),
+      doRect(360, 10, 10),
+      doRect(360, 10, 10, 68),
+      doRect(420, 10, 10),
+      doRect(420, 10, 10, 68),
+      doRect(480, 10, 40),
+      doRect(560, 60, 5, 17),
+      doRect(700, 30, 28),
+      doRect(820, 10, 10, 10),
+      doRect(820, 10, 10, 68) }
   }
 
   return o
