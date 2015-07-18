@@ -209,7 +209,19 @@ function collisionFound()
 end
 
 function loadPlayer()
-  return 2, 0
+  if not love.filesystem.exists("save") then
+    love.filesystem.write("save", player.level .. " " .. player.deaths)
+
+    return player.level, player.deaths
+  else
+    local loadData = {}
+
+    for s in love.filesystem.read("save"):gmatch("%S+") do
+      table.insert(loadData, tonumber(s))
+    end
+
+    return unpack(loadData)
+  end
 end
 
 function withColour(r, g, b, a, f)
