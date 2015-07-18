@@ -6,8 +6,8 @@ A simple, addictive game in which you play as *The Dim*, a fried Dim Sim on the 
 
 ## Installation
 
-* [Mac OSX](/dist/DimJump-macosx-x64_0-1-4.zip?raw=true).
-* [Linux](/dist/DimJump_0-1-4.love?raw=true). Requires the Love2D framework.
+* [Mac OSX](/dist/DimJump-macosx-x64_0-1-5.zip?raw=true).
+* [Linux](/dist/DimJump_0-1-5.love?raw=true). Requires the Love2D framework.
 
 ## Instructions
 
