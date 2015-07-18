@@ -42,7 +42,7 @@ function Player:new(o)
 end
 
 function Player:continue(l, d)
-  self.level = l
+  self:setLevel(l)
   self.deaths = d
 end
 
@@ -62,9 +62,11 @@ function Player:centerY()
   return self.y + (self.h / 2)
 end
 
-function Player:nextLevel()
+function Player:setLevel(l)
+  l = l or self.level + 1
   self.x = 0
-  self.level = self.level + 1
+  self.level = l
+  self.world:clearCollisionPoints(self.level)
 end
 
 function Player:finished()
@@ -97,12 +99,10 @@ end
 function Player:accellerate(dt, width)
   if self:right() > width then
     if self.level < #self.world.levels then
-      self:nextLevel()
+      self:setLevel()
     else
       self:finished()
     end
-
-    self.world:clearCollisionPoints(self.level)
   else
     self.x = self.x + (self.speed * dt)
 

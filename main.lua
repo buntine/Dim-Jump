@@ -35,6 +35,10 @@ function love.load(a)
   player:continue(loadPlayer())
 end
 
+function love.quit()
+  print("QUIT")
+end
+
 function love.update(dt)
   if love.keyboard.isDown(" ") or love.keyboard.isDown("up") then
     startJump()
@@ -202,6 +206,10 @@ end
 function collisionFound()
   local obstacles = world.levels[player.level]
   return any(collision, obstacles)
+end
+
+function loadPlayer()
+  return 2, 0
 end
 
 function withColour(r, g, b, a, f)
