@@ -69,7 +69,7 @@ function love.update(dt)
     for i, o in ipairs(obstacles) do
       if collision(o) then
         world:addCollisionPoint(i, player.x - (player.w / 2), player.y - (player.h / 6))
-        love.audio.play(splatSfx)
+        love.audio.play(sounds.splat)
         player:kill()
       end
     end
@@ -109,7 +109,7 @@ end
 
 function startJump()
   if player.alive and not player.jumping then
-    local sfx = nth(math.random(length(jumpSfx)), jumpSfx)
+    local sfx = nth(math.random(length(sounds.jumps)), sounds.jumps)
 
     love.audio.play(sfx)
     player:jump()
@@ -125,7 +125,7 @@ function love.keyreleased(key)
 end
 
 function drawQueue()
-  love.graphics.draw(dimQueue, 5, world.queueOffset)
+  love.graphics.draw(images.queue, 5, world.queueOffset)
 end
 
 function drawPlayer()
@@ -164,7 +164,7 @@ function drawLevel()
     love.graphics.setStencil(r)
 
     for _, pos in ipairs(world.collisionPoints[i]) do
-      love.graphics.draw(blood, pos[1], pos[2])
+      love.graphics.draw(images.blood, pos[1], pos[2])
     end
 
     love.graphics.setStencil()
@@ -181,10 +181,10 @@ end
 
 function drawUI()
   if player.alive then
-    love.graphics.draw(title, 10, love.graphics.getHeight() - title:getHeight() - 10)
+    love.graphics.draw(images.title, 10, love.graphics.getHeight() - images.title:getHeight() - 10)
 
     withColour(226, 182, 128, 255, function ()
-      love.graphics.print("Level " .. player.level, title:getWidth() + 30, love.graphics.getHeight() - 24)
+      love.graphics.print("Level " .. player.level, images.title:getWidth() + 30, love.graphics.getHeight() - 24)
     end)
   else
     withColour(186, 142, 88, 255, function ()
