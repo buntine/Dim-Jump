@@ -8,26 +8,31 @@ function love.load(a)
   love.audio.setVolume(0.1)
   love.keyboard.setKeyRepeat(true)
 
-  title = love.graphics.newImage("assets/images/title.png")
-  blood = love.graphics.newImage("assets/images/blood.png")
-  dimQueue = love.graphics.newImage("assets/images/dim_queue.png")
-  splatSfx = love.audio.newSource("assets/sounds/splat.wav")
-  theme = love.audio.newSource("assets/sounds/invaded_city.mp3")
+  sounds = {
+    splat = love.audio.newSource("assets/sounds/splat.wav"),
+    theme = love.audio.newSource("assets/sounds/invaded_city.mp3")
+  }
+
+  images = {
+    title = love.graphics.newImage("assets/images/title.png"),
+    blood = love.graphics.newImage("assets/images/blood.png"),
+    queue = love.graphics.newImage("assets/images/dim_queue.png")
+  }
 
   fonts = {
     small = love.graphics.newFont("assets/fonts/addstandard.ttf", 18),
     big = love.graphics.newFont("assets/fonts/addstandard.ttf", 42)
   }
 
-  love.graphics.setFont(fonts.small)
-
   local jumpDir = "assets/sounds/jumps/"
-  jumpSfx = map(function (f)
+  sounds.jumps = map(function (f)
     return love.audio.newSource(jumpDir..f)
   end, love.filesystem.getDirectoryItems(jumpDir))
 
-  theme:setLooping(true)
-  love.audio.play(theme)
+  love.graphics.setFont(fonts.small)
+
+  sounds.theme:setLooping(true)
+  love.audio.play(sounds.theme)
 
   world = World:new{ground=love.graphics.getHeight() - 80}
   player = Player:new{world=world}
