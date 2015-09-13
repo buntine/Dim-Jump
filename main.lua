@@ -245,12 +245,14 @@ function withFont(name, f)
 end
 
 function printInCenter(s, xo, yo)
-  xo = xo or 0
-  yo = yo or 0
-
   local f = love.graphics.getFont()
   local fw = f:getWidth(s)
   local fh = f:getHeight(s)
 
-  love.graphics.print(s, ((love.graphics.getWidth() / 2) - (fw / 2)) + xo, ((love.graphics.getHeight() / 2) - (fh / 2)) + yo)
+  xo = xo or 0
+  yo = yo or 0
+
+  love.graphics.print(s,
+                      ((love.graphics.getWidth() / 2) - (fw / 2)) + xo,
+                      ((love.graphics.getHeight() / 2) - (fh / 2)) + yo)
 end
