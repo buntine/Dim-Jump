@@ -161,16 +161,12 @@ function drawLevel()
     end
 
     r()
-   -- love.graphics.setStencil(r)
 
-    -- Draw blood splats onto the obstacle stencil.
     withStencil(r, function ()
       for _, pos in ipairs(world.collisionPoints[i]) do
         love.graphics.draw(images.blood, pos[1], pos[2])
       end
     end)
-
-    --    love.graphics.setStencil()
   end
 end
 
