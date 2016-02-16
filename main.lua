@@ -161,13 +161,16 @@ function drawLevel()
     end
 
     r()
-    love.graphics.setStencil(r)
+   -- love.graphics.setStencil(r)
 
-    for _, pos in ipairs(world.collisionPoints[i]) do
-      love.graphics.draw(images.blood, pos[1], pos[2])
-    end
+    -- Draw blood splats onto the obstacle stencil.
+    withStencil(r, function ()
+      for _, pos in ipairs(world.collisionPoints[i]) do
+        love.graphics.draw(images.blood, pos[1], pos[2])
+      end
+    end)
 
-    love.graphics.setStencil()
+    --    love.graphics.setStencil()
   end
 end
 
@@ -209,8 +212,7 @@ function collision(o)
 end
 
 function collisionFound()
-  local obstacles = world.levels[player.level]
-  return any(collision, obstacles)
+  return any(collision, world.levels[player.level])
 end
 
 function savePlayer()
@@ -233,6 +235,7 @@ function loadPlayer()
   end
 end
 
+-- Helper functions to get around Love2D oddities.
 function withColour(r, g, b, a, f)
   local _r, _g, _b, _a = love.graphics.getColor()
 
@@ -247,6 +250,12 @@ function withFont(name, f)
   love.graphics.setFont(fonts[name])
   f()
   love.graphics.setFont(_f)
+end
+
+function withStencil(s, f)
+  love.graphics.setStencil(s)
+  f()
+  love.graphics.setStencil()
 end
 
 function printInCenter(s, xo, yo)
