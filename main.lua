@@ -249,9 +249,10 @@ function withFont(name, f)
 end
 
 function withStencil(s, f)
-  love.graphics.setStencil(s)
+  love.graphics.stencil(s, "replace", 1)
+  love.graphics.setStencilTest("greater", 0)
   f()
-  love.graphics.setStencil()
+  love.graphics.setStencilTest()
 end
 
 function printInCenter(s, xo, yo)
